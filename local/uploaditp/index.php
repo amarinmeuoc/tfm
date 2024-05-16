@@ -29,10 +29,49 @@
 
  require_once '../../config.php';
 
- $data = ['YOUR DATA GOES HERE'];
+ global $USER, $DB, $CFG;
+
+ use local_uploaditp\form as form_itp_route;
+
+ $PAGE->set_url('/local/uploaditp/index.php');
+ $PAGE->set_context(context_system::instance());
+
+ $param=optional_param('type','',PARAM_TEXT);
+ $message=optional_param('message','',PARAM_TEXT);
+
+ require_login();
+ 
+
+ $context=context_system::instance();
+ if (!has_capability('local/uploaditp:seeallthings',$context)) {
+    echo $OUTPUT->header();
+    echo "Access forbiden!!. Contact with the admin for more information.";
+    echo $OUTPUT->footer();
+    return;
+ }
+    
+  // Instantiate the forms from within the plugin.
+  $mform = new form_itp_route\formitp();
+  $manageform = new \local_uploaditp\manageform($mform);
+
+ $strpagetitle = get_string('pluginname','local_uploaditp');
+ $strpageheader = get_string('title','local_uploaditp');
+
+ $PAGE->set_title($strpagetitle);
+ $PAGE->set_heading($strpageheader);
+ 
+ $manageform->managedata();
 
  echo $OUTPUT->header();
+ $manageform->displayForm();
+ if ($param=='ok'){
+    \core\notification::success($message);
+ }
+ if ($param=='error'){
+    \core\notification::error($message);
+ }
+ if ($param=='missing'){
+    \core\notification::info('Debe cargar el archivo antes.');
+ }
 
-echo $OUTPUT->render_from_template('local_uploaditp/content', $data);
-
-echo $OUTPUT->footer();
+ echo $OUTPUT->footer();

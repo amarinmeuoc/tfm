@@ -29,10 +29,12 @@
 
  defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2024020801.01;
+$plugin->version = 2024020801.04;
 $plugin->requires = 2023100902.06;
 $plugin->component = 'block_totalassessment';
-
+$plugin->dependencies = array(
+    'block_itp' => ANY_VERSION,   // The block ITP must be present (any version).
+);
 
 $plugin->release='1.0';
 $plugin->maturity= MATURITY_STABLE;

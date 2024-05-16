@@ -1,153 +1,57 @@
 <h1>ITP Trainee</h1>
 <div class="form-container">
-  
-  <form action="#" method="POST">
-
-  <div class="mb-2">
-  <label for="selCustomerid">Select customer</label>
-  <select id="selCustomerid" class="custom-select" aria-label=".form-select-sm example">
-  <option value="1" selected>CU01 - Customer A</option>
-  <option value="2">CU02 - Customer B</option>
-  </select>
+  {{{ form }}}
 </div>
- 
-<div class="mb-2">
-  <label for="selGroupid">Select Group</label>
-  
-  <select id="selGroupid" class="custom-select" aria-label=".form-select-sm example">
-  <option value="1" selected>Group C1</option>
-  <option value="2">Group C2</option>
-  </select>
-</div>
-<div class="mb-2 ftebillid">
-  <label for="tebillid">Write billid:</label>
-  
-  <input type="text" id="tebillid" class="form-control" placeholder="EN-XXX">
-</div>
- <button class="btn btn-secondary ml-0">Search</button>
-
-  </form>
-</div>
-<hr>
 <div class="block_itp_content">
 <div class="table-responsive block_itp_table">
 <table class="generaltable table-sm">
-<caption>Training plan of: Peter Parker<br>
-<p><small><a href="mailto:peterparker@gmail.com" title="Send email to Peter Parker">peterparker@gmail.com</a></small></p>
-<small class="text-info">Updated on: <em>19-Mayo-2024</em></small></caption>
+<caption>Training plan of: {{user.firstname}} {{user.lastname}}<br>
+<span>Email: </span><a href="mailto:{{user.email}}">{{user.email}}</a><br>
+<small class="text-info">Updated on: <em>{{#userdate}} {{itp.0.lastupdate}}, {{#str}} strftimedate, core_langconfig {{/str}} {{/userdate}}</em></small></caption>
 
 <thead>
 <tr>
     <th>Course</th>
     <th>Duration</th>
-    <th><a href="#">Start date &#9652;</a></th>
-    <th><a  href="#">End date</a></th>
+    <th><a id="sd-link" href="{{url}}">Start date {{#orderbystartdate}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbystartdate}}</a></th>
+    <th><a id="ed-link" href="{{url}}">End date {{#orderbyenddate}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbyenddate}}</a></th>
     <th>Location</th>
     <th>Classroom</th>
     <th>Schedule</th>
-    <th><a  href="#">Att</a></th>
-    <th><a href="#">Ass</a></th>
+    <th><a id="at-link" href="#">Att {{#orderbyatt}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbyatt}}</a></th>
+    <th><a id="as-link" href="#">Ass {{#orderbyass}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbyass}}</a></th>
 </tr>
 </thead>
 <tbody class='itp_detail'>
+{{#itp}}
 <tr>
-<td><a href="#">British History</a></td>
-<td>29 days</td>
-<td>01/02/2024</td>
-<td>29/02/2024</td>
-<td>Altillo building</td>
-<td>Room 13</td>
-<td>Morning</td>
-<td><a href="">99%</a></td>
-<td><a href="">50</a></td>
+<td><a href="{{courseUrl}}">{{coursename}}</a></td>
+<td>{{duration}}</td>
+<td>{{#userdate}} {{startdate}}, {{#str}} strftimedate, core_langconfig {{/str}} {{/userdate}}</td>
+<td>{{#userdate}} {{enddate}}, {{#str}} strftimedate, core_langconfig {{/str}} {{/userdate}}</td>
+<td>{{location}}</td>
+<td>{{classroom}}</td>
+<td>{{schedule}}</td>
+<td>{{#attendance}}<a class='linkatt' startdate={{startdate}} enddate={{enddate}} courseId={{courseId}} group="{{itp.0.groupid}}" customer="{{itp.0.customerid}}" billid="{{itp.0.billid}}" href="">{{attendance}}</a>{{/attendance}}{{^attendance}}-{{/attendance}}</td>
+<td>{{#assessment}}<a class='linkass' courseId={{courseId}} group="{{itp.0.groupid}}" customer="{{itp.0.customerid}}" billid="{{itp.0.billid}}" href="">{{assessment}}</a>{{/assessment}}{{^assessment}}-{{/assessment}}</td>
 </tr>
-<tr>
-<td><a href="#">Literature Course</a></td>
-<td>15 days</td>
-<td>01/03/2024</td>
-<td>15/03/2024</td>
-<td>Altair building</td>
-<td>Room 6</td>
-<td>Morning</td>
-<td><a href="">85%</a></td>
-<td><a href="">60</a></td>
-</tr>
-<tr>
-<td><a href="#">Activities</a></td>
-<td>3 days</td>
-<td>16/03/2024</td>
-<td>16/04/2024</td>
-<td>Altair building</td>
-<td>Room 4</td>
-<td>Morning</td>
-<td><a href="">-</a></td>
-<td><a href="">-</a></td>
-</tr>
-<tr>
-<td><a href="#">Spanish History</a></td>
-<td>45 days</td>
-<td>01/06/2024</td>
-<td>18/07/2024</td>
-<td>Falando building</td>
-<td>Room X</td>
-<td>Afternoon</td>
-<td>-</td>
-<td>-</td>
-</tr>
-<tr>
-<td><a href="#">Literature Course</a></td>
-<td>30 days</td>
-<td>19/07/2024</td>
-<td>18/08/2024</td>
-<td>Altair building</td>
-<td>Room 3</td>
-<td>Afternoon</td>
-<td>-</td>
-<td>-</td>
-</tr>
-<tr>
-<td><a href="#">Mathmatics Course</a></td>
-<td>3 days</td>
-<td>19/08/2024</td>
-<td>25/08/2024</td>
-<td>Altair building</td>
-<td>Room 4</td>
-<td>Morning</td>
-<td>-</td>
-<td>-</td>
-</tr>
-
+{{/itp}}
 </tbody>
 
 </table>
 </div>
 </div>
 
-<style>
-.control {
-    margin-botton:1em;
-}
+{{#js}}
+//Este código carga el archivo javascript compilado con grunt.
+//Dentro del archivo javascript debe definirse/exportarse una funcion init que obtenga los parámetros uniqid para su procesamiento
 
-label{
-    min-width:250px;
-}
+require(['block_itp/showAss'],function(module){
+    module.init("{{token}}","{{itp.0.email}}","{{user.firstname}}" ,"{{user.lastname}}");
+});
 
-.ftebillid {
-  position: relative;
-  width: 100%;
-  padding-right: 15px;
-}
+require(['block_itp/showAtt'],function(module){
+    module.init("{{token}}","{{itp.0.email}}","{{user.firstname}}" ,"{{user.lastname}}");
+});
 
-.form-control {
-    display:inline;
-    width:auto;
-}
-
-@media (min-width: 768px) {
-  .ftebillid {
-    flex: 0 0 75%;
-    max-width: 75%;
-  }
-}
-
-</style>
+{{/js}}

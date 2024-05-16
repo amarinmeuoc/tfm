@@ -29,3 +29,17 @@
 
 $string['pluginname']= 'Bloque ITP Plugin';
 $string['title']= 'Individual Training Plan';
+$string['titlelegend']= 'This block shows the trainee schedule';
+$string['itp:myaddinstance']= 'Añadir instancias ITP';
+$string['itp:addinstance']= 'Añadir instancias ITP a nivel más general';
+$string['itp:view']= 'Permiso para ver el bloque ITP';
+$string['itp:viewControllerForm']= 'Ver formulario de seleccion de trainee en el ITP';
+$string['submit']= 'Search';
+$string['bosubmit']= 'Search';
+$string['customer_select']= 'Select customer';
+$string['select_group']= 'Select Group';
+$string['tebillid']= 'Billid: ';
+$string['itpTrainee']= 'Upload ITP Trainee ';
+$string['itpTeacher']= 'Update Training Plan';
+$string['group_link']= 'Manage Group';
+$string['customer_link']= 'Customer Group';

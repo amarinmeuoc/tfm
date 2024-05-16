@@ -23,9 +23,11 @@
  */
 
  require_once(__DIR__.'/../../config.php');
+ 
 
- class block_totalassessment extends block_base {
 
+class block_totalassessment extends block_base {
+    
     /**
      * Initialises the block.
      *
@@ -43,16 +45,27 @@
     public function get_content() {
         global $OUTPUT;
 
+        require_login();
+        $context=context_block::instance($this->instance->id);
+        if (!has_capability('block/totalassessment:view',$context)){          
+            $this->content->text= "<h1>Error: Access forbiden!!.</h1> <p>Contact with the admin for more information.</p>";          
+            return;
+        }
+
         if ($this->content !== null) {
             return $this->content;
         }
 
         $this->content = new stdClass();
         $this->content->footer = '';
+        $this->page->requires->js('/blocks/totalassessment/assets/progressbar.min.js',true);
+        $this->page->requires->js('/blocks/totalassessment/assets/calculateAss.js',true);
+       
 
-        // Add logic here to define your template data or any other content.
-        $data = ['YOUR DATA GOES HERE'];
-
+        $totalAss=0;
+      
+        $data = ['totalass'=>$totalAss]; 
+        
         $this->content->text = $OUTPUT->render_from_template('block_totalassessment/content', $data);
 
         return $this->content;
@@ -71,5 +84,10 @@
             'mod' => false,
             'my' => true,
         ];
+    }
+
+    //It doesnt display header in the block
+    public function hide_header() {
+        return false;
     }
 }

@@ -29,5 +29,18 @@
 
 $string['pluginname']= 'Upload ITP Plugin';
 $string['title']= 'Upload ITP Plugin';
-
+$string['titlelegend']= 'Upload the ITP of trainee or the Training Plan';
+$string['submit']= 'Upload';
+$string['settings_link']='Upload ITP';
+$string['uploaditp:seeallthings']='Access to the upload ITP Admin Tool';
+$string['tab']= 'Tab';
+$string['comma']= 'Comma';
+$string['colon']= 'Colon';
+$string['semicolon']= 'Semicolon';
+$string['customer_select']= 'Select Customer';
+$string['itp_select']= 'Choose the file you are going to upload: ITP Trainee / Updated ITP Dates: ';
+$string['email_yes']= 'Yes';
+$string['email_no']= 'No';
+$string['labeltextemaileditor']='Write a text in case you want to send an email to all trainees informing about any ITP Update';
+$string['subject']="Subject";
 

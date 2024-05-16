@@ -29,4 +29,12 @@
 
 $string['pluginname']= 'Create Customer';
 $string['title']= 'Create Customer Interface';
-
+$string['titlelegend']= 'Type the Name and the code for the new customer';
+$string['customername_text']= 'Customer name';
+$string['customercode_text']= 'Customer code';
+$string['submit']= 'Add new';
+$string['remove']= 'Remove';
+$string['customer_select']= 'List of available customers';
+$string['createcustomer:seeallthings']="Puede subir/borrar un nuevo cliente";
+$string['settings_link']="Create Customer";
+$string['error']='Access forbidden!! Contact with the admin for more information.';

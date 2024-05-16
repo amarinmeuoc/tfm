@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -16,24 +15,18 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * MOODLE VERSION INFORMATION
+ * Block definition class for the local_createcustomer plugin.
  *
- * This file defines the current version of the local_createvessel Moodle code being used.
- * This is compared against the values stored in the database to determine
- * whether upgrades should be performed (see lib/db/*.php)
- *
- * @package    local_createvessel
- * @copyright  2024 Alberto Marín Mendoza (http://myhappycoding.com)
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   local_createcustomer
+ * @copyright 2023, Alberto Marín <desarrollador@myhappycoding.com>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
- defined('MOODLE_INTERNAL') || die();
-
-$plugin->version = 2024020801.02;
-$plugin->requires = 2023100902.06;
-$plugin->component = 'local_createvessel';
+ defined('MOODLE_INTERNAL') || die;
 
 
-
-$plugin->release='1.0';
-$plugin->maturity= MATURITY_STABLE;
+$ADMIN->add('root', new admin_externalpage( 'local_createcustomer', 
+                                            get_string('settings_link','local_createcustomer'), 
+                                            $CFG->wwwroot.'/local/createcustomer/index.php')
+                                        );
+    

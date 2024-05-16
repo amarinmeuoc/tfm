@@ -29,9 +29,35 @@
 
  require_once '../../config.php';
 
- 
- $data = ['YOUR DATA GOES HERE'];
+ global $PAGE;
+ use local_createcustomer\form as form_route;
+
+ $PAGE->set_url('/local/createcustomer/index.php');
+ $PAGE->set_context(context_system::instance());
+
+ require_login();
+
+ $context=context_system::instance();
+ if (!has_capability('local/createcustomer:seeallthings',$context)) {
+    echo $OUTPUT->header();
+    $message=get_string('error','local_createcustomer');
+    \core\notification::error($message);
+    echo $OUTPUT->footer();
+    return;
+ }
+    
+ // Instantiate the forms from within the plugin.
+ $mform = new form_route\createcustomerform();
+ $manageform = new \local_createcustomer\manageclass($mform);
+
+ $strpagetitle = get_string('pluginname','local_createcustomer');
+ $strpageheader = get_string('title','local_createcustomer');
+
+ $PAGE->set_title($strpagetitle);
+ $PAGE->set_heading($strpageheader);
+
  echo $OUTPUT->header();
 
-echo $OUTPUT->render_from_template('local_createcustomer/content', $data);
-echo $OUTPUT->footer();
+ $manageform->displayForm();  
+
+ echo $OUTPUT->footer();

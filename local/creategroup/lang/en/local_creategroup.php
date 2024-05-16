@@ -18,22 +18,22 @@
 /**
  * MOODLE VERSION INFORMATION
  *
- * This file defines the current version of the local_createvessel plugin code being used.
+ * This file defines the current version of the local_creategroup plugin code being used.
  * This is compared against the values stored in the database to determine
  * whether upgrades should be performed (see lib/db/*.php)
  *
- * @package    local_createvessel
+ * @package    local_creategroup
  * @copyright  2024 Alberto Marín Mendoza (http://myhappycoding.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
- require_once '../../config.php';
-
- 
- $data = ['YOUR DATA GOES HERE'];
-
- echo $OUTPUT->header();
-
-echo $OUTPUT->render_from_template('local_createvessel/content', $data);
-
-echo $OUTPUT->footer();
+$string['pluginname']= 'Create Group';
+$string['title']= 'Create Group Interface';
+$string['titlelegend']= 'Type the Name for the new group';
+$string['submit']= 'Add new';
+$string['remove']= 'Remove';
+$string['tegroup']= 'Write a group code';
+$string['tecustomer']= 'Select the customer';
+$string['tegrouplist']= 'group list for the selected customer';
+$string['settings_link']='Manage group';
+$string['creategroup:seeallthings']="Puede subir/borrar un group";

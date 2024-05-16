@@ -26,6 +26,13 @@
 
  class block_itp extends block_base {
 
+    protected $subtitle;
+    protected $tablecaption;
+    protected $welcome;
+    protected $schedule;
+    protected $orderby, $order;
+    protected $url;
+    
     /**
      * Initialises the block.
      *
@@ -33,6 +40,10 @@
      */
     public function init() {
         $this->title = get_string('pluginname', 'block_itp');
+        $this->url=new \moodle_url('/my/');
+        $this->orderby=optional_param('orderby','startdate',PARAM_TEXT);
+        $this->order = optional_param('order','ASC',PARAM_TEXT);
+        $this->schedule= new \block_itp\schedule( $this->orderby,$this->order);
     }
 
     /**
@@ -41,22 +52,54 @@
      * @return string The block HTML.
      */
     public function get_content() {
-        global $OUTPUT;
+        global $OUTPUT, $USER,$DB;
+        require_login();
 
         if ($this->content !== null) {
-            return $this->content;
+            return $this->content;  
         }
-
         $this->content = new stdClass();
         $this->content->footer = '';
-
+        $context=context_block::instance($this->instance->id);
+        if (!has_capability('block/itp:view',$context)){          
+            $this->content->text= "<h1>Error: Access forbiden!!.</h1> <p>Contact with the admin for more information.</p>";          
+            return;
+        }
+          
         // Add logic here to define your template data or any other content.
-        $data = ['YOUR DATA GOES HERE'];
+        $userInfo=$this->schedule->getUserInformation();
+        $scheduleObj=$this->schedule->getSchedule();
+        $form_html="";
+        $role=isset($USER->profile['rol'])?$USER->profile['rol']:'';
+        
+        if (!preg_match('/student/i',$role)) {
+            $this->display_form($userInfo, $scheduleObj, $form_html);
+        }
 
-        //$this->content->text = $OUTPUT->render_from_template('block_itp/itpcontent', $data);
-        //$this->content->text = $OUTPUT->render_from_template('block_itp/assessmentDetails', $data);
-        $this->content->text = $OUTPUT->render_from_template('block_itp/attendanceDetails', $data);
-        return $this->content;
+       $order=($this->order==='ASC')?false:true;
+       $this->page->requires->js_init_call('startOrdering', array($order)); 
+       $this->page->requires->js('/blocks/itp/js/ordering.js',false);
+      
+       $token=$DB->get_record_sql("SELECT token FROM mdl_external_tokens 
+                            INNER JOIN mdl_user ON mdl_user.id=mdl_external_tokens.userid
+                            WHERE username=:username LIMIT 1", ['username'=>$USER->username]);
+        
+       $data = [
+        'token'=>($token)?$token->token:'',
+        'form'=>$form_html,
+        'user'=>$userInfo,
+        'itp'=>$scheduleObj,
+        'orderbystartdate'=>$this->orderby==='startdate'?true:false,
+        'orderbyenddate'=>$this->orderby==='enddate'?true:false,
+        'orderbyatt'=>$this->orderby==='att'?true:false,
+        'orderbyass'=>$this->orderby==='ass'?true:false,
+        'orderby'=>$this->orderby,
+        'order'=>$this->order==='ASC'?false:true,
+        ];
+           
+        $this->content->text = $OUTPUT->render_from_template('block_itp/itpcontent', $data);
+             
+        return $this->content;       
     }
 
     /**
@@ -72,5 +115,32 @@
             'mod' => false,
             'my' => true,
         ];
+    }
+
+    private function display_form(&$userInfo, &$scheduleObj,&$form_html){
+        $formFilter= new \block_itp\form\filter_form();
+        $toform=null;
+
+        //Once the form has been submited
+        if ($fromform = $formFilter->get_data()){
+            $customer=isset($fromform->selCustomer)?$fromform->selCustomer:null;
+            
+            $group=isset($fromform->selgroup)?$fromform->selgroup:'';
+            $billid=strtoupper($fromform->tebillid);
+
+            $this->schedule->setUser($customer, $group, $billid);
+            $userInfo=$this->schedule->getUserInformation();
+            
+            $this->schedule->setITP($customer, $group, $billid);
+            $scheduleObj=$this->schedule->getSchedule();
+           
+        }
+
+        // Set anydefault data (if any).
+        $formFilter->set_data($toform);
+
+        // Display the form.
+        $form_html = $formFilter->render();
+       
     }
 }

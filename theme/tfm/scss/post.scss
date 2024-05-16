@@ -10,6 +10,8 @@
     @media only screen and (min-width:1000px){
         .img-logo img{
             display: block;
+			width: 300px;
+			height: auto;
             animation: mylogoanimation 2s ease 0s 1 normal forwards;
         }
         justify-content: space-around;
