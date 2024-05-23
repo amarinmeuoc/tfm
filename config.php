@@ -7,9 +7,9 @@ $CFG = new stdClass();
 $CFG->dbtype    = 'mysqli';
 $CFG->dblibrary = 'native';
 $CFG->dbhost    = 'localhost';
-$CFG->dbname    = '<<database_name>>';
-$CFG->dbuser    = '<<database_username>>';
-$CFG->dbpass    = '<<database_username_passowrd>>';
+$CFG->dbname    = 'tfmdatabase';
+$CFG->dbuser    = 'tfmuser';
+$CFG->dbpass    = '12345.Abcd';
 $CFG->prefix    = 'mdl_';
 $CFG->dboptions = array (
   'dbpersist' => 0,
@@ -18,8 +18,8 @@ $CFG->dboptions = array (
   'dbcollation' => 'utf8mb4_0900_ai_ci',
 );
 
-$CFG->wwwroot   = '<<http://domainname>>';
-$CFG->dataroot  = '<<route_folder_moodle>>';
+$CFG->wwwroot   = 'http://tfm.com';
+$CFG->dataroot  = '/home/alberto/public_html/tfmdata';
 $CFG->admin     = 'admin';
 
 $CFG->directorypermissions = 0777;

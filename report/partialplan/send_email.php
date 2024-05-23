@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -16,23 +15,30 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * MOODLE VERSION INFORMATION
+ * Config changes report
  *
- * This file defines the current version of the report_dailyattendance Moodle code being used.
- * This is compared against the values stored in the database to determine
- * whether upgrades should be performed (see lib/db/*.php)
- *
- * @package    report_dailyattendance
- * @copyright  2024 Alberto Marín Mendoza (http://myhappycoding.com)
+ * @package    report_partialplan
+ * @subpackage traineereport
+ * @copyright  2024 Alberto Marín
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
- defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2024020801.01;
-$plugin->requires = 2023100902.06;
-$plugin->component = 'report_dailyattendance';
+require(__DIR__.'/../../config.php');
+global $USER,$DB,$PAGE;
 
+require_login();
+$PAGE->set_context(\context_system::instance());
+$message=optional_param('messagebody', '', PARAM_RAW);
+$to=optional_param('to', '', PARAM_TEXT);
+$subject=optional_param('subject', '', PARAM_TEXT);
+$to=explode(',',$to);
+$result=true;
+foreach ($to as $email){
+    $selectedUser = $DB->get_record("user", ["email"=>$email]);
+    if (!email_to_user($selectedUser,$USER,$subject,'',$message,'',''))
+        $result=false;
+}
 
-$plugin->release='1.0';
-$plugin->maturity= MATURITY_STABLE;
+header('Content-Type: application/json; charset=utf-8');
+echo json_encode(['result'=>$result]);

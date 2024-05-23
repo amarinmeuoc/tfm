@@ -15,17 +15,98 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Block definition class for the report_partialplan plugin.
+ * Config changes report
  *
- * @package   report_partialplan
- * @copyright 2023, Alberto Marín <desarrollador@myhappycoding.com>
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    report_partialplan
+ * @subpackage traineereport
+ * @copyright  2024 Alberto Marín
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
- require_once(__DIR__.'/../../config.php');
 
- $data = ['YOUR DATA GOES HERE'];
- echo $OUTPUT->header();
+require(__DIR__.'/../../config.php');
+global $USER, $PAGE, $OUTPUT, $CFG;
+
+require_login();
+$order = optional_param('order', 'ASC', PARAM_TEXT);
+$orderby = optional_param('orderby', 'startdate', PARAM_TEXT);
+
+$url=new moodle_url('/report/partialplan/index.php');
+
+
+
+
+
+$context=\context_system::instance();
+$PAGE->set_context($context);
+
+$PAGE->set_pagelayout('report');
+$PAGE->set_title('ITP Reports view');
+$PAGE->set_url($url);
+
+
+if (!has_capability('report/partialplan:view',$context)){   
+    echo $OUTPUT->header();       
+    $message="<h1>Error: Access forbiden!!.</h1> <p>Contact with the admin for more information.</p>";
+    echo html_writer::div($message);
+    echo html_writer::div('<a class="btn btn-primary" href="'.$CFG->wwwroot.'">Go back</a>');       
+    echo $OUTPUT->footer();   
+    return;
+}
+
+
+
+$trainee_form= new \report_partialplan\form\trainee_form();
+$training_plan= new \report_partialplan\trainingplan($order,$orderby);
+
+
+echo $OUTPUT->header();
+echo $OUTPUT->heading(get_string('titlelegend', 'report_partialplan'));
+
+
+$toform='';
+
+
+if ($fromform = $trainee_form->get_data()) {
+    
+    // When the form is submitted, and the data is successfully validated,
+    // the `get_data()` function will return the data posted in the form.
+    $customerid=isset($fromform->selcustomer)?$fromform->selcustomer:$USER->profile['customercode'];
+    $date=$fromform->assesstimefinish;
+   
+    $training_plan->setTrainingPlan($customerid,$date);
+    
+} 
+
+$order=($order==='ASC')?false:true;
+$PAGE->requires->js_init_call('startOrdering', array($order)); 
+$PAGE->requires->js('/report/partialplan/js/ordering.js',false);
+
+$trainee_form->set_data($toform);
+$trainee_form->display();
+$group=$training_plan->group;
+
+$token=$DB->get_record_sql("SELECT token FROM mdl_external_tokens 
+                            INNER JOIN mdl_user ON mdl_user.id=mdl_external_tokens.userid
+                            WHERE username=:username LIMIT 1", ['username'=>$USER->username]);
+$token=$token->token;
+
+$data = [
+    'token'=>$token,
+    'customerid'=>$training_plan->customerid,
+    'group'=>$group,
+    'courses'=>$training_plan->getTrainingPlan(),
+    'orderbystartdate'=>$orderby==='startdate'?true:false,
+    'orderbyenddate'=>$orderby==='enddate'?true:false,
+    'orderby'=>$orderby,
+    'order'=>$order,
+];
+
+
 
 echo $OUTPUT->render_from_template('report_partialplan/content', $data);
+
 echo $OUTPUT->footer();
+
+
+

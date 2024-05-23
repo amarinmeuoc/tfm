@@ -1,45 +1,19 @@
-<a href="#">Dashboard</a> / Partial Training Plan
-<h1>Partial Training Plan</h1>
-<form>
-
-<div class="row mb-3">
-<div class="col-md-3">
-<label for="idtype">Select customer </label>
-</div>
-<div class="col-md-9">
-<select class="form-control" id="idtype">
-<option>CU01 - Customer A</option>
-<option>CU02 - Customer B</option>
-</select>
-</div>
-</div>
--
-<div class="row mb-3">
-<div class="col-md-3">
-<label for="idtype">Select a date to filter </label>
-</div>
-<div class="col-md-9">
-<input type="date" class="form-control" value="2021-05-30">
-</div>
-</div>
-<div>
-<button class="btn btn-primary m-2 ml-0 ">Submit</button> 
-</div>
-</form>
-<hr>
+<div id="content">
 <form action="#">
 <div class="input-group mb-3" style="max-width:300px;">
-
-<select id="selvesselid" name="selvessel">
-<option value="1" selected>C1</option>
-<option value="2" >C2</option>
-<option value="3" >C3</option>
+<select id="selgroupid" name="selgroup">
+{{#group}}
+<option value={{id}}>{{name}}</option>
+{{/group}}
+{{^group}}
+<option value="null">No group</option>
+{{/group}}
 </select>
-
-  <input type="text" class="form-control" placeholder="billid..." aria-label="Search by billid" aria-describedby="basic-addon2">
+  <input id="tebillid" type="text" class="form-control" placeholder="billid..." aria-label="Search by billid" aria-describedby="basic-addon2">
   <div class="input-group-append">
-    <button class="btn btn-outline-secondary" type="button">Search</button>
+    <button class="btn btn-outline-secondary" type="button" id="bofilter">Search</button>
   </div>
+  <input id="id_token" type="hidden" value="{{token}}">
 </div>
 </form>
 <div class="table-responsive">
@@ -47,69 +21,67 @@
   <thead>
     <tr>
       <th scope="col">WBS</th>
-      <th scope="col"><a  href="#">Course Name</a></th>
-      <th scope="col"><a href="#">Start &#9652;</a></th>
-      <th scope="col"><a  href="#">End </a></th>
-      <th scope="col"><a  href="#">Num. Trainees</a></th>
+      <th scope="col">Course Name</th>
+      <th scope="col"><a id="sd-link" href="{{url}}">Start {{#orderbystartdate}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbystartdate}}</a></th>
+      <th scope="col"><a id="ed-link" href="{{url}}">End {{#orderbyenddate}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbyenddate}}</a></th>
+      <th scope="col">Num. Trainees</th>
       <th scope="col">Enroled</th>
       <th scope="col">Location</th>
-      <th scope="col"><a  href="#">Provider</a></th>
+      <th scope="col">Provider</th>
       <th scope="col">CSV</th>
       <th scope="col">Email</th>
     </tr>
   </thead>
 <tbody>
-
+{{#courses}}
     <tr>
-      <th scope="row">CUS01_MATH1</th>
-      <td>MATHMATICS</td>
-      <td>27/05/2021</td>
-      <td>3/06/2021</td>
-      <td>4</td>
-      <td><a href="#" class="trainees" title="C1_EN-111, C1_EN-112, C1_EN-113, C1_EN-114">{{#shortentext}}35, C1_EN-111, C1_EN-112, C1_EN-113, C1_EN-114{{/shortentext}}</a></td>
-      <td>Altair centre</td>
-      <td>ALTANOBA</td>
-      <td><a href="#" title="download csv" class="btn btn-primary text-center bodownload" style="width:42px;">{{#pix}}i/export, core{{/pix}}</a></td>
-      <td><button  title="Email..." class="btn btn-primary text-center boemail" style="width:42px;">{{#pix}}i/email, core{{/pix}}</button></td>
+      <th scope="row">{{wbs}}</th>
+      <td>{{course}}</td>
+      <td>{{#userdate}} {{startdate}}, {{#str}} strftimedate, core_langconfig {{/str}} {{/userdate}}</td>
+      <td>{{#userdate}} {{enddate}}, {{#str}} strftimedate, core_langconfig {{/str}} {{/userdate}}</td>
+      <td>{{num_trainees}}</td>
+      <td><a href="#" class="trainees" title="{{trainees}}">{{#shortentext}}15,{{trainees}}{{/shortentext}}</a></td>
+      <td>{{location}}</td>
+      <td>{{provider}}</td>
+      <td><a data-id="{{trainees}}" href="#" title="download csv" class="btn btn-primary text-center bodownload" style="width:42px;">{{#pix}}i/export, core{{/pix}}</a></td>
+      <td><button data-id="{{trainees}}" title="Email..." class="btn btn-primary text-center boemail" style="width:42px;">{{#pix}}i/email, core{{/pix}}</button></td>
     </tr>
-    <tr>
-      <th scope="row">CUS01_DESGN</th>
-      <td>WEB DESIGN</td>
-      <td>27/06/2021</td>
-      <td>3/07/2021</td>
-      <td>6</td>
-      <td><a href="#" class="trainees" title="C1_EN-111, C1_EN-112, C1_EN-113, C1_EN-114, C1_EN-222, C1_EN-223">{{#shortentext}}35, C1_EN-111, C1_EN-112, C1_EN-113, C1_EN-114, C1_EN-222, C1_EN-223{{/shortentext}}</a></td>
-      <td>Altair centre</td>
-      <td>ACME</td>
-      <td><a href="#" title="download csv" class="btn btn-primary text-center bodownload" style="width:42px;">{{#pix}}i/export, core{{/pix}}</a></td>
-      <td><button  title="Email..." class="btn btn-primary text-center boemail" style="width:42px;">{{#pix}}i/email, core{{/pix}}</button></td>
+{{/courses}}
+{{^courses}}
+<tr>
+      <td colspan="10" class="text-center">No matches found.</td>
+      
     </tr>
-        <tr>
-      <th scope="row">CUS01_AST</th>
-      <td>ASTRONOMY</td>
-      <td>27/07/2021</td>
-      <td>3/08/2021</td>
-      <td>4</td>
-      <td><a href="#" class="trainees" title="C1_EN-111, C1_EN-112, C1_EN-113, C1_EN-114">{{#shortentext}}35, C1_EN-111, C1_EN-112, C1_EN-113, C1_EN-114{{/shortentext}}</a></td>
-      <td>Altair centre</td>
-      <td>ALTANOBA</td>
-      <td><a href="#" title="download csv" class="btn btn-primary text-center bodownload" style="width:42px;">{{#pix}}i/export, core{{/pix}}</a></td>
-      <td><button  title="Email..." class="btn btn-primary text-center boemail" style="width:42px;">{{#pix}}i/email, core{{/pix}}</button></td>
-    </tr>
-    <tr>
-      <th scope="row">CUS01_LIT</th>
-      <td>LITERATURE</td>
-      <td>27/08/2021</td>
-      <td>3/09/2021</td>
-      <td>6</td>
-      <td><a href="#" class="trainees" title="C1_EN-111, C1_EN-112, C1_EN-113, C1_EN-114, C1_EN-222, C1_EN-223">{{#shortentext}}35, C1_EN-111, C1_EN-112, C1_EN-113, C1_EN-114, C1_EN-222, C1_EN-223{{/shortentext}}</a></td>
-      <td>Altair centre</td>
-      <td>FARLOPA</td>
-      <td><a href="#" title="download csv" class="btn btn-primary text-center bodownload" style="width:42px;">{{#pix}}i/export, core{{/pix}}</a></td>
-      <td><button  title="Email..." class="btn btn-primary text-center boemail" style="width:42px;">{{#pix}}i/email, core{{/pix}}</button></td>
-    </tr>
-
-
+{{/courses}}
 </tbody>
 </table>
 </div>
+</div>
+
+{{#js}}
+//Este código carga el archivo javascript compilado con grunt.
+//Dentro del archivo javascript debe definirse/exportarse una funcion init que obtenga los parámetros uniqid para su procesamiento
+
+
+
+require(['report_partialplan/downloadcsv'],function(module){
+    module.init({{customerid}});
+});
+
+require(['report_partialplan/sendemail'],function(module){
+    module.init({{customerid}});
+});
+
+require(['report_partialplan/showtrainees'],function(module){
+    module.init("{{trainees}}");
+});
+
+require(['report_partialplan/managefilter'],function(module){
+  module.init({{customerid}},{{order}},'{{orderby}}',{{orderbystartdate}},{{orderbyenddate}});
+})
+
+{{/js}}
+
+{{#js}}
+$(document).ready(function(){ window.console.log("ready.......")});
+{{/js}}

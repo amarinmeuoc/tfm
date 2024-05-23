@@ -18,14 +18,22 @@
 /**
  * MOODLE VERSION INFORMATION
  *
- * This file defines the current version of the block_itp plugin code being used.
+ * This file defines the current version of the report_trainingplan plugin code being used.
  * This is compared against the values stored in the database to determine
  * whether upgrades should be performed (see lib/db/*.php)
  *
- * @package    block_itp
+ * @package    report_partialplan
  * @copyright  2024 Alberto Marín Mendoza (http://myhappycoding.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname']= 'Bloque Dailyattendance';
-$string['title']= 'Daily attendance';
+ $capabilities = [
+    
+    'report/partialplan:view' => [
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => [
+            'user'=>CAP_ALLOW,
+        ]
+    ],
+];

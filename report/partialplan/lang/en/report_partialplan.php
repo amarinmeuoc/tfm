@@ -18,14 +18,18 @@
 /**
  * MOODLE VERSION INFORMATION
  *
- * This file defines the current version of the block_itp plugin code being used.
+ * This file defines the current version of the report_partialplan plugin code being used.
  * This is compared against the values stored in the database to determine
  * whether upgrades should be performed (see lib/db/*.php)
  *
- * @package    block_itp
+ * @package    report_partialplan
  * @copyright  2024 Alberto Marín Mendoza (http://myhappycoding.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname']= 'Report Partial plan';
-$string['title']= 'Partial Plan';
+$string['pluginname']= 'Partial Training Plan Report';
+$string['title']= 'Partial Training plan';
+$string['titlelegend']= 'Partial Training plan';
+$string['selcustomer']= 'Select customer';
+$string['selgroup']= 'Select group';
+$string['dateTo']='Select a date to filter';
