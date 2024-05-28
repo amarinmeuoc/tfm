@@ -2,7 +2,7 @@
 namespace report_partialplan;
 
 
-class manageform {
+class ManageForm {
     public $toform='';
     public $fromform='';
     public $trainee_form;

@@ -53,7 +53,7 @@ class get_training_plan extends \core_external\external_api {
         $orderby=$request['params'][0]['orderby'];
         $order=$request['params'][0]['order'];
 
-        $training_plan= new \report_partialplan\trainingplan($order,$orderby);
+        $training_plan= new \report_partialplan\TrainingPlan($order,$orderby);
         
         $training_plan->setTrainingPlan($customershortcode,$unixtime);
         $list_of_courses=$training_plan->getTrainingPlanFiltered($groupid,$billid);

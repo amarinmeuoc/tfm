@@ -56,8 +56,8 @@ if (!has_capability('report/partialplan:view',$context)){
 
 
 
-$trainee_form= new \report_partialplan\form\trainee_form();
-$training_plan= new \report_partialplan\trainingplan($order,$orderby);
+$trainee_form= new \report_partialplan\form\Trainee_Form();
+$training_plan= new \report_partialplan\TrainingPlan($order,$orderby);
 
 
 echo $OUTPUT->header();

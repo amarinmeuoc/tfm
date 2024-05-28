@@ -1,0 +1,108 @@
+
+<div class="result table-responsive">
+<div class="loader p-5 hide">
+    {{> core/loading }}
+</div>
+    <table class="generaltable table-sm" >
+        <caption >Attendance list</caption>
+        <thead>
+        <tr>
+        <th><a class="orderby" href="#" data-value="group">Group {{#orderbygroup}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbygroup}}</a></th>
+        <th><a class="orderby" href="#" data-value="billid">Billid {{#orderbybillid}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbybillid}}</a></th>
+        <th><a class="orderby" href="#" data-value="Prenom">Name {{#orderbyname}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbyname}}</a></th>
+        <th><a class="orderby" href="#" data-value="Nom">LastName {{#orderbylastname}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbylastname}}</a></th>
+        <th><a class="orderby" href="#" data-value="Nomducours">WBS {{#orderbywbs}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbywbs}}</a></th>
+        <th>Course name</th>
+        <th><a class="orderby" href="#" data-value="DateAtt">Date {{#orderbydate}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbydate}}</a></th>
+        <th><a class="orderby" href="#" data-value="description">Attendance {{#orderbydescription}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbydescription}}</a></th>
+        <th>Feedback</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#attendance_list}}
+    <tr>
+    <td class="group">{{grouptrainee}}</td>
+    <td class="billid">{{billid}}</td>
+    <td>{{prenom}}</td>
+    <td>{{nom}}</td>
+    <td>{{nomducours}}</td>
+    <td>{{namecourse}}</td>
+    <td>{{#userdate}} {{dateatt}}, {{#str}} strftimedate, core_langconfig {{/str}} {{/userdate}}</td>
+    <td>{{description}}</td>
+    <td>{{feedback}}</td>
+    </tr>
+        {{/attendance_list}}
+        {{^attendance_list}}
+         <tr><td colspan="9" class="align-center">No results found.</td></tr>
+        {{/attendance_list}}
+        
+        
+        </tbody>
+        </table>
+    <p> Displaying {{num_records}} results from {{num_total_records}}</p>
+</div>
+    <div class="d-flex flex-row-reverse">
+    <nav id="{{$pagingbarid}}paging-bar-{{uniqid}}{{/pagingbarid}}"
+        class="ml-auto"
+        data-region="paging-bar"
+        data-ignore-control-while-loading="{{ignorecontrolwhileloading}}"
+        data-hide-control-on-single-page="{{hidecontrolonsinglepage}}"
+        {{#activepagenumber}}
+            data-active-page-number="{{.}}"
+        {{/activepagenumber}}
+        {{^activepagenumber}}
+            data-active-page-number="1"
+        {{/activepagenumber}}
+        
+        {{#arialabels.paginationnav}}
+            aria-label="{{.}}"
+        {{/arialabels.paginationnav}}
+        {{^arialabels.paginationnav}}
+            aria-label="{{#str}} pagedcontentnavigation, core {{/str}}"
+        {{/arialabels.paginationnav}}
+        {{#arialabels.paginationnavitemcomponents}}
+            data-aria-label-components-pagination-item="{{.}}"
+        {{/arialabels.paginationnavitemcomponents}}
+        {{^arialabels.paginationnavitemcomponents}}
+            data-aria-label-components-pagination-item="pagedcontentnavigationitem, core"
+        {{/arialabels.paginationnavitemcomponents}}
+        {{#arialabels.paginationactivenavitemcomponents}}
+            data-aria-label-components-pagination-active-item="{{.}}"
+        {{/arialabels.paginationactivenavitemcomponents}}
+        {{^arialabels.paginationactivenavitemcomponents}}
+            data-aria-label-components-pagination-active-item="pagedcontentnavigationactiveitem, core"
+        {{/arialabels.paginationactivenavitemcomponents}}
+        {{#barsize}}
+            data-bar-size="{{.}}"
+        {{/barsize}}
+    >
+        <ul class="pagination mb-0">
+        {{#barsize}}
+                {{< core/paged_content_paging_bar_item }}
+                    {{$linkattributes}}aria-hidden="true"{{/linkattributes}}
+                    {{$item-content}}
+                        &hellip;
+                    {{/item-content}}
+                    {{$attributes}}data-dots="beginning"{{/attributes}}
+                {{/ core/paged_content_paging_bar_item }}
+            {{/barsize}}
+              {{#pages}}
+              {{< core/paged_content_paging_bar_item }}
+                    {{$attributes}}data-page="true"{{/attributes}}
+                {{/ core/paged_content_paging_bar_item }}
+                  
+            {{/pages}}
+            {{#barsize}}
+                {{< core/paged_content_paging_bar_item }}
+                    {{$linkattributes}}aria-hidden="true"{{/linkattributes}}
+                    {{$item-content}}
+                        &hellip;
+                    {{/item-content}}
+                    {{$attributes}}data-dots="ending"{{/attributes}}
+                {{/ core/paged_content_paging_bar_item }}
+            {{/barsize}}
+        </ul>
+    </nav>
+
+           
+    </div>

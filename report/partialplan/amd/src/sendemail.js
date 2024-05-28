@@ -20,7 +20,7 @@ const traineesFunctionEvent=(e,customerid)=>{
     e.stopPropagation(); //To avoid the event bubbles up further up the DOM tree, stopping it at the button element
     const element=e.target.closest('button');
     const modalForm= new ModalForm({
-        formClass: "\\report_partialplan\\form\\modal_form",
+        formClass: "\\report_partialplan\\form\\Modal_Form",
         args: {list_trainees: element.getAttribute('data-id'),customer:customerid},
         modalConfig: {title: "Send email to..."},
         returnFocus: element

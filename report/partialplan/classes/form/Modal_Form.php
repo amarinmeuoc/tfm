@@ -29,7 +29,7 @@
 
 namespace report_partialplan\form;
 
-class modal_form extends \core_form\dynamic_form {
+class Modal_Form extends \core_form\dynamic_form {
     private $id;
     // Add elements to form.
     public function definition() {

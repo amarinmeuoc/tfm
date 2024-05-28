@@ -2,7 +2,7 @@
 namespace report_partialplan;
 
 
-class trainingplan {
+class TrainingPlan {
 
     private $trainingplan;
     public $date;
