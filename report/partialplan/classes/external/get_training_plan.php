@@ -56,6 +56,7 @@ class get_training_plan extends \core_external\external_api {
         $training_plan= new \report_partialplan\TrainingPlan($order,$orderby);
         
         $training_plan->setTrainingPlan($customershortcode,$unixtime);
+        
         $list_of_courses=$training_plan->getTrainingPlanFiltered($groupid,$billid);
         
         $list_of_group=$training_plan->group;

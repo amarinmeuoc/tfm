@@ -54,5 +54,8 @@
     "not op_mini all",
     "not Opera > 0",
     "not dead"
-  ]
+  ],
+  "dependencies": {
+    "pdf-lib": "^1.17.1"
+  }
 }

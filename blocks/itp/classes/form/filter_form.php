@@ -121,15 +121,27 @@ class filter_form extends \moodleform {
         $text->setType('tebillid',PARAM_TEXT);
         $mform->addElement('html', '</div>');
 
+        $searchareas = \core_search\manager::get_search_areas_list(true);                                                           
+        $areanames = array();                                                                                                       
+        foreach ($searchareas as $areaid => $searcharea) {                                                                          
+            $areanames[$areaid] = $searcharea->get_visible_name();                                                                  
+        }                                                                                                                           
+        $options = array(                                                                                                           
+            'multiple' => false,                                                  
+            'noselectionstring' => get_string('allareas', 'search'),                                                                
+        );         
+        $mform->addElement('autocomplete', 'areaids', get_string('searcharea', 'search'), $areanames, $options);
+
         $hidden=$mform->addElement('hidden', 'formSent', 'yes');
         $hidden->setType('formSent',PARAM_TEXT);
 
-        $mform->addElement('html', '<div class="submit">');
-        $mform->addElement('button', 'bosubmit', get_string('submit', 'block_itp'));
+        //$mform->addElement('html', '<div class="submit">');
+        //$mform->addElement('button', 'bosubmit', get_string('submit', 'block_itp'));
         
-        $mform->addElement('html', '</div>');
-
-             
+        //$mform->addElement('html', '</div>');
+        $mform->addElement('html', '<div class="submit">');
+        $mform->addElement('submit', 'bosubmit', get_string('submit', 'block_itp'));
+        $mform->addElement('html', '</div>');     
     }
 
     // Custom validation should be added here.

@@ -36,7 +36,7 @@
 {{#courses}}
     <tr>
       <th scope="row">{{wbs}}</th>
-      <td>{{course}}</td>
+      <td>{{#terminado}}<a data-wbs={{wbs}} data-trainees={{trainees}} class="courseFinished" href="#" title="Download Report">{{course}}</a>{{/terminado}}{{^terminado}}{{course}}{{/terminado}}</td>
       <td>{{#userdate}} {{startdate}}, {{#str}} strftimedate, core_langconfig {{/str}} {{/userdate}}</td>
       <td>{{#userdate}} {{enddate}}, {{#str}} strftimedate, core_langconfig {{/str}} {{/userdate}}</td>
       <td>{{num_trainees}}</td>
@@ -78,7 +78,13 @@ require(['report_partialplan/showtrainees'],function(module){
 
 require(['report_partialplan/managefilter'],function(module){
   module.init({{customerid}},{{order}},'{{orderby}}',{{orderbystartdate}},{{orderbyenddate}});
-})
+});
+
+
+
+require(['report_partialplan/downloadpdf','/report/partialplan/js/pdf-lib.min.js'],function(module,PDF){
+  module.init(PDF,{{customerid}});
+  });
 
 {{/js}}
 

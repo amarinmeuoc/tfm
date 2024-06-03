@@ -81,6 +81,8 @@ if ($fromform = $trainee_form->get_data()) {
 $order=($order==='ASC')?false:true;
 $PAGE->requires->js_init_call('startOrdering', array($order)); 
 $PAGE->requires->js('/report/partialplan/js/ordering.js',false);
+//$PAGE->requires->js_call_amd('report_partialplan/loadModules', 'init');
+
 
 $trainee_form->set_data($toform);
 $trainee_form->display();

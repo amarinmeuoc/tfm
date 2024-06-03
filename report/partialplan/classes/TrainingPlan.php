@@ -63,6 +63,10 @@ class TrainingPlan {
         $courses=$DB->get_records_sql($sql,['customer'=>$this->customerid,'startdate'=>$formatedDate, 'enddate'=>$formatedDate]);
         $courses=array_values($courses);
         $this->trainingplan= $courses;
+        $this->trainingplan=array_map(function($course){
+            $course->terminado=$course->enddate<time();
+            return $course;
+        },$this->trainingplan);
         
         $this->group=$this->getGroupFromDB($this->customerid);
         $this->orderTrainingPlan($this->orderby,$this->order);
