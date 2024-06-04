@@ -40,17 +40,20 @@ class filter_form extends \moodleform {
         $mform = $this->_form; // Don't forget the underscore!
         $role=isset($USER->profile['rol'])?$USER->profile['rol']:'';
         $role=strtolower($role);
-        $PAGE->requires->css('/blocks/itp/css/styles.css');
+        $token=$DB->get_record_sql("SELECT token FROM mdl_external_tokens 
+                            INNER JOIN mdl_user ON mdl_user.id=mdl_external_tokens.userid
+                            WHERE username=:username LIMIT 1", ['username'=>$USER->username]);
+        $PAGE->requires->css('/blocks/itp/css/styles.scss');
+        $field_customercode=isset($USER->profile['customercode'])?$USER->profile['customercode']:'';
+        $default_customer=($field_customercode!=='')?$this->customerCode($field_customercode):null;
         if ($role!=='observer') {
-            $PAGE->requires->js('/blocks/itp/js/javascript.js');
+            $PAGE->requires->js_call_amd('block_itp/init', 'init',[$token->token]);
         } else {
-            $PAGE->requires->js('/blocks/itp/js/javascript_obv.js');
+            $PAGE->requires->js_call_amd('block_itp/init_observer', 'init',[$token->token,$default_customer]);
         }
         $mform->_attributes['id']="filterformid";
         $mform->_attributes['class']="w-100";
 
-        $field_customercode=isset($USER->profile['customercode'])?$USER->profile['customercode']:'';
-        $default_customer=($field_customercode!=='')?$this->customerCode($field_customercode):null;
 
         $form_is_sent=optional_param('formSent',null,PARAM_TEXT);
         $selected_customer=optional_param('selCustomer',$default_customer,PARAM_TEXT); //Selecciona el cliente por defecto
@@ -92,9 +95,7 @@ class filter_form extends \moodleform {
             $mform->addElement('html', '<div class="selectgroup">');
             $mform->addElement('select', 'selgroup', get_string('select_group', 'block_itp'),$options,[]);
             $mform->addElement('html', '</div>');
-            header('Content-Type: application/json; charset=utf-8');
-            echo json_encode($options);
-            exit();
+            
         } else {
             $selected_customer=($selected_customer===null)?$default_selected_customer:$selected_customer;
                         
@@ -116,22 +117,34 @@ class filter_form extends \moodleform {
 
         
 
-        $mform->addElement('html', '<div class="billid">');
-        $text=$mform->addElement('text', 'tebillid', get_string('tebillid', 'block_itp'),[]);
-        $text->setType('tebillid',PARAM_TEXT);
-        $mform->addElement('html', '</div>');
+        
 
-        $searchareas = \core_search\manager::get_search_areas_list(true);                                                           
-        $areanames = array();                                                                                                       
-        foreach ($searchareas as $areaid => $searcharea) {                                                                          
-            $areanames[$areaid] = $searcharea->get_visible_name();                                                                  
-        }                                                                                                                           
+        //List all trainees in the LMS
+        $trainee_query=$DB->get_records_sql('SELECT u.id,username,firstname, lastname,
+                                            MAX(if (uf.shortname="billid",ui.data,"")) as billid,
+                                            MAX(if (uf.shortname="group",ui.data,"")) as groupname,
+                                            MAX(if (uf.shortname="customercode",ui.data,"")) as customercode
+                                            FROM mdl_user AS u
+                                            INNER JOIN mdl_user_info_data AS ui ON ui.userid=u.id
+                                            INNER JOIN mdl_user_info_field AS uf ON uf.id=ui.fieldid
+                                            GROUP by username,firstname, lastname');
+        $trainee_list=array_values($trainee_query);
+
+        $trainee_array=Array();
+        //$pattern='/(OF-\d+)|(EN-\d+)|(^\d+\s[A-Z][A-Z]$)|(RSNFTT-\d+)/i';
+        $pattern='//i';
+        foreach($trainee_list as $elem){
+            if (preg_match($pattern, $elem->billid)==1)
+                $trainee_array[$elem->billid]=$elem->groupname."_".$elem->billid." ".$elem->firstname.", ".$elem->lastname;
+        }
+
         $options = array(                                                                                                           
             'multiple' => false,                                                  
-            'noselectionstring' => get_string('allareas', 'search'),                                                                
+            'noselectionstring' => 'Use the select box below to search a trainee',
+            'placeholder'=>'Write a trainee billid or a name'                                                                
         );         
-        $mform->addElement('autocomplete', 'areaids', get_string('searcharea', 'search'), $areanames, $options);
-
+        $mform->addElement('autocomplete', 'list_trainees', 'Selected trainee', $trainee_array, $options);
+        
         $hidden=$mform->addElement('hidden', 'formSent', 'yes');
         $hidden->setType('formSent',PARAM_TEXT);
 

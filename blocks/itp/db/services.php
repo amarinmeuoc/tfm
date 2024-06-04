@@ -78,6 +78,25 @@ $functions = [
         ]
         
     ],
+    'block_itp_get_trainee_list' => [
+        // The name of the namespaced class that the function is located in.
+        'classname'   => '\block_itp\external\get_trainee_list',
+
+        // A brief, human-readable, description of the web service function.
+        'description' => 'Get the trainee list of a given customer or group.',
+
+        // Options include read, and write.
+        'type'        => 'read',
+
+        // Whether the service is available for use in AJAX calls from the web.
+        'ajax'        => true,
+
+        // An optional list of services where the function will be included.
+        'services' => [
+            MOODLE_OFFICIAL_MOBILE_SERVICE
+        ]
+        
+    ],
 ];
 
 //Queda pendiente averiguar como puñetas hacer un custom service.

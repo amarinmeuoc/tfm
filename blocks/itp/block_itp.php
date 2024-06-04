@@ -126,7 +126,8 @@
             $customer=isset($fromform->selCustomer)?$fromform->selCustomer:null;
             
             $group=isset($fromform->selgroup)?$fromform->selgroup:'';
-            $billid=strtoupper($fromform->tebillid);
+            $billid=strtoupper($fromform->list_trainees);
+            
 
             $this->schedule->setUser($customer, $group, $billid);
             $userInfo=$this->schedule->getUserInformation();

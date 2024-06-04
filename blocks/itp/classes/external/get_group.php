@@ -16,8 +16,7 @@ class get_group extends \core_external\external_api {
         return new external_function_parameters([
             'params'=>new external_multiple_structure(
                 new external_single_structure([
-                    'customer'=>new external_value(PARAM_INT,'customer id'),
-                    'group'=>new external_value(PARAM_INT,'group id'),
+                    'customercode'=>new external_value(PARAM_INT,'customer id'),
                 ])
             ) 
         ]);
@@ -35,11 +34,11 @@ class get_group extends \core_external\external_api {
         
         // Extract parameters
        
-        $customer=$request['params'][0]['customer'];
-        $group=$request['params'][0]['group'];
+        $customer=$request['params'][0]['customercode'];
         
-        $group=$DB->get_record('grouptrainee',['customer'=>$customer,'id'=>$group]);
         
+        $groups=$DB->get_records('grouptrainee',['customer'=>$customer],'id,name');
+        $groups=array_values($groups);
 
          // now security checks
          $context = \context_system::instance();
@@ -51,14 +50,19 @@ class get_group extends \core_external\external_api {
 
         
  
-        return ['group'=>$group->name];
+        return $groups;
     }
 
     public static function execute_returns() {
         
-           return new external_single_structure(
-                ['group' => new external_value(PARAM_TEXT, 'The group name')]
-           );
+        return 
+            new external_multiple_structure(
+                new external_single_structure([
+                    'id'=>new external_value(PARAM_INT,'group id'),
+                    'name'=>new external_value(PARAM_TEXT,'group name')
+                ])
+                );
+       
         
        
     }
