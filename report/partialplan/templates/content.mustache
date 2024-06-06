@@ -36,7 +36,7 @@
 {{#courses}}
     <tr>
       <th scope="row">{{wbs}}</th>
-      <td>{{#terminado}}<a data-wbs={{wbs}} data-trainees={{trainees}} class="courseFinished" href="#" title="Download Report">{{course}}</a>{{/terminado}}{{^terminado}}{{course}}{{/terminado}}</td>
+      <td>{{#terminado}}<a data-wbs={{wbs}} data-trainees={{trainees}} data-startdate={{startdate}} data-enddate={{enddate}} class="courseFinished" href="#" title="Download Report">{{course}}</a>{{/terminado}}{{^terminado}}{{course}}{{/terminado}}</td>
       <td>{{#userdate}} {{startdate}}, {{#str}} strftimedate, core_langconfig {{/str}} {{/userdate}}</td>
       <td>{{#userdate}} {{enddate}}, {{#str}} strftimedate, core_langconfig {{/str}} {{/userdate}}</td>
       <td>{{num_trainees}}</td>

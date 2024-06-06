@@ -18,7 +18,9 @@ class get_assessment extends \core_external\external_api {
                     'customerid'=>new external_value(PARAM_INT,'Customer Id'),
                     'group'=>new external_value(PARAM_TEXT,'group'),
                     'billid'=>new external_value(PARAM_TEXT,'Billid'),
-                    'wbs'=>new external_value(PARAM_TEXT,'WBS')
+                    'wbs'=>new external_value(PARAM_TEXT,'WBS'),
+                    'startdate'=>new external_value(PARAM_INT,'Course startdate'),
+                    'enddate'=>new external_value(PARAM_INT,'Course enddate'),
                 ])
             ) 
         ]);
@@ -48,6 +50,8 @@ class get_assessment extends \core_external\external_api {
             $wbs=$value['wbs'];
             $group=$value['group'];
             $billid=$value['billid'];
+            $startdate=$value['startdate'];
+            $enddate=$value['enddate'];
             
             //get the shortname
             $customercode=$DB->get_record('customer',array('id'=>$customerid),'shortname')->shortname;
@@ -85,8 +89,14 @@ class get_assessment extends \core_external\external_api {
                     $formatedUser->lastname=$user->lastname;
                     $formatedUser->email=$user->email;
                     //Get the courseid from its shortname
-                    $courseid=$DB->get_record('course', ['shortname'=>$wbs], 'id')->id;
-                    
+                    $course=$DB->get_record('course', ['shortname'=>$wbs], 'id,fullname');
+                    $courseid=$course->id;
+                    $coursefullname=$course->fullname;
+
+                    $formatedUser->wbs=$wbs;
+                    $formatedUser->coursename=$coursefullname;
+                    $formatedUser->startdate=$startdate;
+                    $formatedUser->enddate=$enddate;
                     //Get the trainee assessment and attendance from userid and courseid
                     $sql="SELECT AVG(finalgrade) as finalgrade, MAX(itemtype) as itemtype FROM (SELECT u.id,u.firstname,u.lastname,grades.finalgrade,grades.itemid, items.courseid, items.itemname, items.itemtype FROM mdl_user as u
                         inner join mdl_grade_grades as grades on grades.userid=u.id
@@ -144,7 +154,12 @@ class get_assessment extends \core_external\external_api {
                 'lastname'=>new external_value(PARAM_TEXT, 'trainee lastname'),
                 'email'=>new external_value(PARAM_TEXT,'email'),
                 'att'=>new external_value(PARAM_TEXT,'Attendance'),
-                'ass'=>new external_value(PARAM_TEXT,'Assessment')
+                'ass'=>new external_value(PARAM_TEXT,'Assessment'),
+                'wbs'=>new external_value(PARAM_TEXT,'Course wbs'),
+                'coursename'=>new external_value(PARAM_TEXT,'course name'),
+                'startdate'=>new external_value(PARAM_INT,'Course startdate'),
+                'enddate'=>new external_value(PARAM_INT,'Course enddate'),
+
                 
             ])
         );
