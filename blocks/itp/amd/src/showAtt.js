@@ -91,6 +91,14 @@ const onLoadFunction=(myxhr,firstname,lastname,token)=>{
     //There are no records
     if (res.length===0){
         formattedData.message="Waiting for attendance to be uploaded. Please, wait until attendance is uploaded."
+    } else {
+      const listofPresents=res.filter(elem=>{
+                                  return elem.description==='Present';
+                              });
+      if (listofPresents.length===res.length){
+        formattedData.message="The attendance for this course is 100%";
+      } 
+    
     }
     
     showTemplateAssessment(formattedData);

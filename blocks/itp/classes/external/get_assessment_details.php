@@ -57,7 +57,7 @@ class get_assessment_details extends \core_external\external_api {
                                 and i.itemtype<>"course"',array('courseid'=>$courseid, 'userid'=>$user->id));
 
         $exams=array_values($exams);
-
+        
          // now security checks
          $context = \context_system::instance();
          self::validate_context($context);
@@ -69,13 +69,48 @@ class get_assessment_details extends \core_external\external_api {
         // Return response data
         
         foreach ($exams as $key => $elem) {
+            $textValue='';
+            if ($elem->itemname==='Attitude' || $elem->itemname==='Participation'){
+                switch ($elem->finalgrade) {
+                    case '1':
+                        # code...
+                        $textValue='None';
+                        break;
+                    case '2':
+                        # code...
+                        $textValue='Poor';
+                        break;
+                    case '3':
+                        # code...
+                        $textValue='Sufficient';
+                        break;
+                    case '4':
+                        # code...
+                        $textValue='Good';
+                        break;
+                    case '5':
+                        # code...
+                        $textValue='Very Good';
+                        break;
+                    case '6':
+                        # code...
+                        $textValue='Excellent';
+                        break;
+                    default:
+                        # code...
+                        $textValue='None';
+                        break;
+                }
+            } else {
+                $textValue=$elem->finalgrade;
+            }
             # code...
             $exams[$key]=(object)array(
                 'kpi'=>$elem->itemname,
                 'id'=>$elem->id,
                 'coursename'=>$elem->coursename,
                 'type'=>$elem->itemtype,
-                'score'=>$elem->finalgrade,
+                'score'=>$textValue,
                 'feedback'=>strip_tags($elem->feedback),
                 'timemodified'=>$elem->timemodified
             );
@@ -83,6 +118,8 @@ class get_assessment_details extends \core_external\external_api {
        
         return $exams;
     }
+
+    
 
     public static function execute_returns() {
         return new external_multiple_structure(
