@@ -33,3 +33,4 @@ $string['titlelegend']= 'Partial Training plan';
 $string['selcustomer']= 'Select customer';
 $string['selgroup']= 'Select group';
 $string['dateTo']='Select a date to filter';
+$string['partialplan:view']='Partial Plan View Permission';

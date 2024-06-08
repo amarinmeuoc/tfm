@@ -1,6 +1,7 @@
 <div id="content">
 <form action="#">
 <div class="input-group mb-3" style="max-width:300px;">
+<label for="selgroupid" style="display:none;">Select group: </label>
 <select id="selgroupid" name="selgroup">
 {{#group}}
 <option value={{id}}>{{name}}</option>
@@ -9,7 +10,7 @@
 <option value="null">No group</option>
 {{/group}}
 </select>
-  <input id="tebillid" type="text" class="form-control" placeholder="billid..." aria-label="Search by billid" aria-describedby="basic-addon2">
+  <label for="tebillid" style="display:none;">billid:</label><input id="tebillid" type="text" class="form-control" placeholder="billid..." aria-label="Search by billid" aria-describedby="basic-addon2">
   <div class="input-group-append">
     <button class="btn btn-outline-secondary" type="button" id="bofilter">Search</button>
   </div>
@@ -20,31 +21,31 @@
 <table class="table">
   <thead>
     <tr>
-      <th scope="col">WBS</th>
-      <th scope="col">Course Name</th>
-      <th scope="col"><a id="sd-link" href="{{url}}">Start {{#orderbystartdate}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbystartdate}}</a></th>
-      <th scope="col"><a id="ed-link" href="{{url}}">End {{#orderbyenddate}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbyenddate}}</a></th>
-      <th scope="col">Num. Trainees</th>
-      <th scope="col">Enroled</th>
-      <th scope="col">Location</th>
-      <th scope="col">Provider</th>
-      <th scope="col">CSV</th>
-      <th scope="col">Email</th>
+      <th scope="col" id="wbs">WBS</th>
+      <th scope="col" id="coursename">Course Name</th>
+      <th scope="col" id="startdate"><a id="sd-link" href="{{url}}">Start {{#orderbystartdate}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbystartdate}}</a></th>
+      <th scope="col" id="enddate"><a id="ed-link" href="{{url}}">End {{#orderbyenddate}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbyenddate}}</a></th>
+      <th scope="col" id="numtrainees">Num. Trainees</th>
+      <th scope="col" id="enroled">Enroled</th>
+      <th scope="col" id="location">Location</th>
+      <th scope="col" id="provider">Provider</th>
+      <th scope="col" id="csv">CSV</th>
+      <th scope="col" id="email">Email</th>
     </tr>
   </thead>
 <tbody>
 {{#courses}}
     <tr>
-      <th scope="row">{{wbs}}</th>
-      <td>{{#terminado}}<a data-wbs={{wbs}} data-trainees={{trainees}} data-startdate={{startdate}} data-enddate={{enddate}} class="courseFinished" href="#" title="Download Report">{{course}}</a>{{/terminado}}{{^terminado}}{{course}}{{/terminado}}</td>
-      <td>{{#userdate}} {{startdate}}, {{#str}} strftimedate, core_langconfig {{/str}} {{/userdate}}</td>
-      <td>{{#userdate}} {{enddate}}, {{#str}} strftimedate, core_langconfig {{/str}} {{/userdate}}</td>
-      <td>{{num_trainees}}</td>
-      <td><a href="#" class="trainees" title="{{trainees}}">{{#shortentext}}15,{{trainees}}{{/shortentext}}</a></td>
-      <td>{{location}}</td>
-      <td>{{provider}}</td>
-      <td><a data-id="{{trainees}}" href="#" title="download csv" class="btn btn-primary text-center bodownload" style="width:42px;">{{#pix}}i/export, core{{/pix}}</a></td>
-      <td><button data-id="{{trainees}}" title="Email..." class="btn btn-primary text-center boemail" style="width:42px;">{{#pix}}i/email, core{{/pix}}</button></td>
+      <th scope="row" headers="wbs" id="wbs_row">{{wbs}}</th>
+      <td headers="coursename wbs_row">{{#terminado}}<a data-wbs={{wbs}} data-trainees={{trainees}} data-startdate={{startdate}} data-enddate={{enddate}} class="courseFinished" href="#" title="Download Report">{{course}}</a>{{/terminado}}{{^terminado}}{{course}}{{/terminado}}</td>
+      <td headers="startdate wbs_row">{{#userdate}} {{startdate}}, {{#str}} strftimedate, core_langconfig {{/str}} {{/userdate}}</td>
+      <td headers="enddate wbs_row">{{#userdate}} {{enddate}}, {{#str}} strftimedate, core_langconfig {{/str}} {{/userdate}}</td>
+      <td headers="numtrainees wbs_row">{{num_trainees}}</td>
+      <td headers="enroled wbs_row"><a href="#" class="trainees" title="{{trainees}}">{{#shortentext}}15,{{trainees}}{{/shortentext}}</a></td>
+      <td headers="location wbs_row">{{location}}</td>
+      <td headers="provider wbs_row">{{provider}}</td>
+      <td headers="csv wbs_row"><a data-id="{{trainees}}" href="#" title="download csv" class="btn btn-primary text-center bodownload" style="width:42px;">{{#pix}}i/export, core{{/pix}}</a></td>
+      <td headers="email wbs_row"><button data-id="{{trainees}}" title="Email..." class="btn btn-primary text-center boemail" style="width:42px;">{{#pix}}i/email, core{{/pix}}</button></td>
     </tr>
 {{/courses}}
 {{^courses}}

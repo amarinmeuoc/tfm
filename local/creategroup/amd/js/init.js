@@ -1,8 +1,30 @@
 let selCustomer=document.querySelector('#id_tecustomer');
 let selgroup=document.querySelector('#id_tegrouplist');
 let bosubmit=document.querySelector('#id_bosubmit');
+bosubmit.classList.remove('btn-secondary');
+bosubmit.classList.add('btn-primary');
 let boremove=document.querySelector('#id_boremove');
+boremove.classList.remove('btn-secondary');
+boremove.classList.add('btn-danger');
 let tegroup=document.querySelector('#id_tegroup');
+let divAfterboAddNew=document.querySelector("#fitem_id_bosubmit>div:nth-child(1)");
+let divAfterboAddNew2=document.querySelector("#fitem_id_bosubmit>div:nth-child(2)");
+let divAfterboRemove=document.querySelector("#fitem_id_boremove>div:nth-child(1)");
+let divAfterboRemove2=document.querySelector("#fitem_id_boremove>div:nth-child(2)");
+
+let fititemsubmit=document.querySelector("#fitem_id_bosubmit");
+let fititemremove=document.querySelector("#fitem_id_boremove");
+
+fititemsubmit.classList.remove('form-group','row');
+fititemremove.classList.remove('form-group','row');
+divAfterboAddNew.remove();
+divAfterboAddNew2.className='';
+divAfterboRemove.remove();
+divAfterboRemove2.className='';
+
+let newlayerbutton=document.createElement('div');
+newlayerbutton.classList.add('flex','row');
+boremove.append(newlayerbutton);
 
 bosubmit.addEventListener('click',(e)=>{
     if (tegroup.value!==''){

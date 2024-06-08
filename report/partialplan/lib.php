@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -16,24 +15,20 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * MOODLE VERSION INFORMATION
- *
- * This file defines the current version of the report_trainingplan plugin code being used.
- * This is compared against the values stored in the database to determine
- * whether upgrades should be performed (see lib/db/*.php)
+ * Version details
  *
  * @package    report_partialplan
- * @copyright  2024 Alberto Marín Mendoza (http://myhappycoding.com)
+ * @copyright  1999 Alberto Marín (https://myhappycoding.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
- $capabilities = [
-    
-    'report/partialplan:view' => [
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => [
-            'non-editing'=>CAP_ALLOW,
-        ]
-    ],
-];
+defined('MOODLE_INTERNAL') || die();
+
+//Muestra el informe del curso
+function report_partialplan_extend_navigation_course($navigation, $course, $context){
+    if (has_capability('report/partialplan:view',$context)){
+        $url=new moodle_url('/report/partialplan/index.php',array('id'=>$course->id));
+        $node=$navigation->add(get_string('pluginname','report_partialplan'),$url,navigation_node::TYPE_SETTING, null, null, null);
+        
+    }
+}

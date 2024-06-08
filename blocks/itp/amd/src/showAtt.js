@@ -6,8 +6,7 @@ export const init = (token,email,firstname,lastname) => {
       customer=linkatt[0].attributes.customer.value;
       group=linkatt[0].attributes.group.value;
       billid=linkatt[0].attributes.billid.value;
-      startdate=linkatt[0].attributes.startdate.value;
-      enddate=linkatt[0].attributes.enddate.value;
+      
 
       linkatt.forEach((link)=>{
         link.addEventListener('click',(event)=>{
@@ -38,6 +37,8 @@ function showTemplateAssessment(response){
 let showAttendanceList=(e,token,email,firstname,lastname)=>{
   e.preventDefault();
   let courseid=e.target.attributes.courseid.value;
+  const startdate=e.target.attributes.startdate.value;
+  const enddate=e.target.attributes.enddate.value;
   const xhr=new XMLHttpRequest();
   const url=window.location.protocol+'//'+window.location.hostname+'/webservice/rest/server.php';
   xhr.open('POST',url,true);
@@ -52,7 +53,7 @@ let showAttendanceList=(e,token,email,firstname,lastname)=>{
 
   xhr.send(formData);
     xhr.onload = (event) => {
-      onLoadFunction(xhr,firstname,lastname,token);
+      onLoadFunction(xhr,firstname,lastname,token,startdate,enddate);
     };
     xhr.onprogress = (event)=>{
       onProgressFunction(event);
@@ -71,7 +72,7 @@ const onProgressFunction=(event)=> {
   }
 };
 
-const onLoadFunction=(myxhr,firstname,lastname,token)=>{
+const onLoadFunction=(myxhr,firstname,lastname,token,startdate,enddate)=>{
   if (myxhr.readyState=== 4 && myxhr.status === 200){
     const res=JSON.parse(myxhr.response);
     const formattedData = {

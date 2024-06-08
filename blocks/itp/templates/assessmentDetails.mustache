@@ -9,27 +9,27 @@
 
 <thead>
 <tr>
-    <th>KPI</th>
-    <th>Score</th>
-    <th>Date</th>
-    <th>Feedback</th>
+    <th id="kpi" scope="col">KPI</th>
+    <th id="score" scope="col">Score</th>
+    <th id="date" scope="col">Date</th>
+    <th id="feedback" scope="col">Feedback</th>
 </tr>
 </thead>
 <tbody>
 
 {{#assessmentDetails}}
 <tr>
-<td>{{kpi}}</td>
-<td>{{score}}</td>
-<td>{{#timemodified}}{{#userdate}} {{timemodified}}, {{#str}} strftimedate, core_langconfig {{/str}} {{/userdate}}{{/timemodified}}</td>
-<td>{{feedback}}{{#timemodified}}{{^feedback}}-{{/feedback}}{{/timemodified}}</td>
+<td headers="kpi">{{kpi}}</td>
+<td headers="score">{{score}}</td>
+<td headers="date">{{#timemodified}}{{#userdate}} {{timemodified}}, {{#str}} strftimedate, core_langconfig {{/str}} {{/userdate}}{{/timemodified}}</td>
+<td headers="feedback">{{feedback}}{{#timemodified}}{{^feedback}}-{{/feedback}}{{/timemodified}}</td>
 </tr>
 {{/assessmentDetails}}
 
 </tbody>
 </table>
 <div>
-<a class="btn btn-primary back" href="{{{dashboard_url}}}" role="button">&crarr; Back to ITP</a>
+<a title="go back" class="btn btn-primary back" href="{{{dashboard_url}}}" role="button">&crarr; Back to ITP</a>
 </div>
 
 {{#js}}

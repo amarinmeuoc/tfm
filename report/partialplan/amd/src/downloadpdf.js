@@ -181,10 +181,6 @@ async function createPdf(PDF,response){
         color: PDF.rgb(0, 0, 0)
     });
 
-    
-    let avgAtt,avgAss=0;
-    
-    
 
     listTrainees.map((trainee,index)=>{
         if (index==10 || index==20 || index==30 || index==40 || index==50){
@@ -262,7 +258,7 @@ async function createPdf(PDF,response){
         
             lineHeightPos-=25;  
         
-
+        
         page.drawText( trainee.billid, {
             x: 55,
             y: lineHeightPos+textFieldHeight/2,
@@ -278,20 +274,20 @@ async function createPdf(PDF,response){
             font: font,
             color: PDF.rgb(0, 0, 0)
         });
-        let attendance=(trainee.att===null)?'-':trainee.att;
-        avgAtt+=Math.floor(trainee.att * 100) / 100;
+        let attendance=(trainee.att===null)?'-':(trainee.att*1).toFixed(2);
+        
         page.drawText( attendance, {
-            x: width-55-textField3Width-textField4Width-30+textField3Width/2,
+            x: width-100-textField3Width-textField4Width+textField3Width/2,
             y: lineHeightPos+textFieldHeight/2,
             size: textFieldSize,
             font: font,
             color: PDF.rgb(0, 0, 0)
         });
 
-        let assessment=(trainee.ass===null)?'-':trainee.ass;
-        avgAss+=Math.floor(trainee.ass * 100) / 100;
+        let assessment=(trainee.ass===null)?'-':(trainee.ass*1).toFixed(2);
+        
         page.drawText( assessment, {
-            x: width-55-textField4Width+textField4Width/2,
+            x: width-75-textField4Width+textField4Width/2,
             y: lineHeightPos+textFieldHeight/2,
             size: textFieldSize,
             font: font,
@@ -307,6 +303,22 @@ async function createPdf(PDF,response){
         });
 
     })
+
+    
+    
+
+    const listComputedAtt=listTrainees.filter(elem=>{
+        return elem.att!==null
+    })
+
+    const listComputedAss=listTrainees.filter(elem=>{
+        return elem.ass!==null
+    });
+
+    let avgAtt=listComputedAtt.reduce((acumulador, elementoActual) => acumulador + Math.floor(elementoActual.att), 0)/listComputedAtt.length;
+    avgAtt=avgAtt.toFixed(2);
+    let avgAss=listComputedAss.reduce((acumulador, elementoActual) => acumulador + Math.floor(elementoActual.ass), 0)/listComputedAss.length;
+    avgAss=avgAss.toFixed(2);
 
     //Total score for the course
     page.drawText( 'Total course average: ', {
@@ -328,7 +340,7 @@ async function createPdf(PDF,response){
     
     
     page.drawText( ''+avgAss, {
-        x: width-55-(textField4Width/2),
+        x: width-75-(textField4Width/2),
         y: lineHeightPos-24,
         size: textFieldSize,
         font: fontBold,

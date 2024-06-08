@@ -13,20 +13,20 @@ Selected user:
 
 </th>
 <tr>
-    <th>Coursename</th>
-    <th>Dateatt</th>
-    <th>Status</th>
-    <th>Feedback</th>
+    <th id="coursename" scope="col">Coursename</th>
+    <th id="date" scope="col">Dateatt</th>
+    <th id="status" scope="col">Status</th>
+    <th id="feedback" scope="col">Feedback</th>
 </tr>
 </thead>
 <tbody>
 
 {{#dailyAttendance}}
 <tr>
-<td>{{coursename}}</td>
-<td>{{#userdate}} {{date}}, {{#str}} strftimedate, core_langconfig {{/str}} {{/userdate}}</td>
-<td>{{description}}</td>
-<td>{{feedback}}</td>
+<td headers="coursename">{{coursename}}</td>
+<td headers="date">{{#userdate}} {{date}}, {{#str}} strftimedate, core_langconfig {{/str}} {{/userdate}}</td>
+<td headers="status">{{description}}</td>
+<td headers="feedback">{{feedback}}</td>
 </tr>
 {{/dailyAttendance}}
 

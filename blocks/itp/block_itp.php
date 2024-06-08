@@ -62,7 +62,7 @@
         $this->content->footer = '';
         $context=context_block::instance($this->instance->id);
         if (!has_capability('block/itp:view',$context)){          
-            $this->content->text= "<h1>Error: Access forbiden!!.</h1> <p>Contact with the admin for more information.</p>";          
+            $this->content->text= "<h1>Error: Access forbidden!!.</h1> <p>Contact with the admin for more information.</p>";          
             return;
         }
           

@@ -6,34 +6,34 @@
 <div class="table-responsive block_itp_table">
 <table class="generaltable table-sm">
 <caption>Showing the training plan of: {{user.firstname}} {{user.lastname}}<br>
-<span>Email: </span><a href="mailto:{{user.email}}">{{user.email}}</a><br>
+<span>Email: </span><a href="mailto:{{user.email}}?subject=Message from the LMS">{{user.email}}</a><br>
 <small class="text-info">Updated on: <em>{{#userdate}} {{itp.0.lastupdate}}, {{#str}} strftimedate, core_langconfig {{/str}} {{/userdate}}</em></small></caption>
 
 <thead>
 <tr>
-    <th>Course</th>
-    <th>Duration</th>
-    <th><a id="sd-link" href="{{url}}">Start date {{#orderbystartdate}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbystartdate}}</a></th>
-    <th><a id="ed-link" href="{{url}}">End date {{#orderbyenddate}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbyenddate}}</a></th>
-    <th>Location</th>
-    <th>Classroom</th>
-    <th>Schedule</th>
-    <th><a id="at-link" href="#">Att {{#orderbyatt}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbyatt}}</a></th>
-    <th><a id="as-link" href="#">Ass {{#orderbyass}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbyass}}</a></th>
+    <th id="course" scope="col">Course</th>
+    <th id="duration" scope="col">Duration</th>
+    <th id="startdate" scope="col"><a id="sd-link" href="{{url}}">Start date {{#orderbystartdate}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbystartdate}}</a></th>
+    <th id="enddate" scope="col"><a id="ed-link" href="{{url}}">End date {{#orderbyenddate}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbyenddate}}</a></th>
+    <th id="location" scope="col">Location</th>
+    <th id="classroom" scope="col">Classroom</th>
+    <th id="schedule" scope="col">Schedule</th>
+    <th id="orderatt" scope="col"><a id="at-link" href="#">Att {{#orderbyatt}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbyatt}}</a></th>
+    <th id="orderass" scope="col"><a id="as-link" href="#">Ass {{#orderbyass}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbyass}}</a></th>
 </tr>
 </thead>
 <tbody class='itp_detail'>
 {{#itp}}
 <tr>
-<td><a href="{{courseUrl}}">{{coursename}}</a></td>
-<td>{{duration}}</td>
-<td>{{#userdate}} {{startdate}}, {{#str}} strftimedate, core_langconfig {{/str}} {{/userdate}}</td>
-<td>{{#userdate}} {{enddate}}, {{#str}} strftimedate, core_langconfig {{/str}} {{/userdate}}</td>
-<td>{{location}}</td>
-<td>{{classroom}}</td>
-<td>{{schedule}}</td>
-<td>{{#attendance}}<a class='linkatt' startdate={{startdate}} enddate={{enddate}} courseId={{courseId}} group="{{itp.0.groupid}}" customer="{{itp.0.customerid}}" billid="{{itp.0.billid}}" href="">{{attendance}}</a>{{/attendance}}{{^attendance}}-{{/attendance}}</td>
-<td>{{#assessment}}<a class='linkass' courseId={{courseId}} group="{{itp.0.groupid}}" customer="{{itp.0.customerid}}" billid="{{itp.0.billid}}" href="">{{assessment}}</a>{{/assessment}}{{^assessment}}-{{/assessment}}</td>
+<td headers="course"><a href="{{courseUrl}}">{{coursename}}</a></td>
+<td headers="duration">{{duration}}</td>
+<td headers="startdate">{{#userdate}} {{startdate}}, {{#str}} strftimedate, core_langconfig {{/str}} {{/userdate}}</td>
+<td headers="enddate">{{#userdate}} {{enddate}}, {{#str}} strftimedate, core_langconfig {{/str}} {{/userdate}}</td>
+<td headers="location">{{location}}</td>
+<td headers="classroom">{{classroom}}</td>
+<td headers="schedule">{{schedule}}</td>
+<td headers="orderatt">{{#attendance}}<a class='linkatt' startdate={{startdate}} enddate={{enddate}} courseId={{courseId}} group="{{itp.0.groupid}}" customer="{{itp.0.customerid}}" billid="{{itp.0.billid}}" href="">{{attendance}}</a>{{/attendance}}{{^attendance}}-{{/attendance}}</td>
+<td headers="orderass">{{#assessment}}<a class='linkass' courseId={{courseId}} group="{{itp.0.groupid}}" customer="{{itp.0.customerid}}" billid="{{itp.0.billid}}" href="">{{assessment}}</a>{{/assessment}}{{^assessment}}-{{/assessment}}</td>
 </tr>
 {{/itp}}
 </tbody>

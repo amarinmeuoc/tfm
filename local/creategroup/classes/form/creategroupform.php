@@ -45,6 +45,7 @@ class creategroupform extends \moodleform {
         $groupname = optional_param('group', null, PARAM_TEXT);
         $operation = optional_param('operation', null, PARAM_TEXT);
         $mform->addElement('text', 'tegroup', get_string('tegroup', 'local_creategroup'), '');
+        $mform->addRule('tegroup','Group code is required','required');
         $mform->setType('tegroup',PARAM_TEXT);
 
         $list_of_customers=$DB->get_records('customer',null,'','id,name');
@@ -101,10 +102,10 @@ class creategroupform extends \moodleform {
             echo json_encode($result);
             exit();
         }
-        
-        $mform->addElement('button', 'bosubmit', get_string('submit', 'local_creategroup'));
-        $mform->addElement('button', 'boremove', get_string('remove', 'local_creategroup'));
-      
+        $mform->addElement('html',  '<div class="flex row m-3">');
+        $mform->addElement('button', 'bosubmit', get_string('submit', 'local_creategroup'),['class'=>'m-1']);
+        $mform->addElement('button', 'boremove', get_string('remove', 'local_creategroup'),['class'=>'m-1']);
+        $mform->addElement('html',  '</div>');
     }
 
     // Custom validation should be added here.

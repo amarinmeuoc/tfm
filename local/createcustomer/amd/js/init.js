@@ -1,6 +1,10 @@
 
     let boaddnew=document.querySelector('#id_bosubmit');
+    boaddnew.classList.remove('btn-secondary');
+    boaddnew.classList.add('btn-primary');
     let boremove=document.querySelector('#id_boremove');
+    boremove.classList.remove('btn-secondary');
+    boremove.classList.add('btn-danger');
     let teshortname=document.querySelector('#id_customercode');
     let tename=document.querySelector('#id_customername');
     let selectText=document.querySelector('#id_type');

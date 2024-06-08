@@ -36,8 +36,9 @@ $url=new moodle_url('/report/partialplan/index.php');
 
 
 
-
-$context=\context_system::instance();
+//Getting the id of frontpage and setting the context
+//All users enroled in the main course will get access to the reports
+$context=\context_course::instance(1);
 $PAGE->set_context($context);
 
 $PAGE->set_pagelayout('report');
@@ -47,7 +48,7 @@ $PAGE->set_url($url);
 
 if (!has_capability('report/partialplan:view',$context)){   
     echo $OUTPUT->header();       
-    $message="<h1>Error: Access forbiden!!.</h1> <p>Contact with the admin for more information.</p>";
+    $message="<h1>Error: Access forbidden!!.</h1> <p>Contact with the admin for more information.</p>";
     echo html_writer::div($message);
     echo html_writer::div('<a class="btn btn-primary" href="'.$CFG->wwwroot.'">Go back</a>');       
     echo $OUTPUT->footer();   

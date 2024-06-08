@@ -31,9 +31,9 @@
     
     'report/dailyattendance:view' => [
         'captype' => 'read',
-        'contextlevel' => CONTEXT_SYSTEM,
+        'contextlevel' => CONTEXT_COURSE,
         'archetypes' => [
-            'user'=>CAP_ALLOW
+            'non-editing'=>CAP_ALLOW
         ]
     ],
    
