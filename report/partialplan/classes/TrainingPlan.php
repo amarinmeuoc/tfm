@@ -13,12 +13,19 @@ class TrainingPlan {
     
     function __construct($order,$orderby,$customershortcode=null,$date=null){
         global $USER;
-        $customerid=null;
-        if (!is_null($customershortcode)){
-            $customerid=$this->getCustomerId($USER->profile['customercode']);
-        } else {
-            $customerid=$this->getFirstCustomerIdFromDB();
-        }
+        $customerid=$this->getFirstCustomerIdFromDB(); //Por defecto se elige el primer cliente de la base de datos
+        
+        /*
+         * Si no se pasa un cliente al constructor se comprueba el codigo cliente del usuario activo
+         * Si el usuario activo no tiene asignado un código de cliente, entonces se elige el primero de la base de datos
+         * Sino se obtiene el id cliente relativo al codigo cliente del cliente acitvo
+        */
+        if (is_null($customershortcode)){ 
+            if ($USER->profile['customercode']!==''){
+                $customerid=$this->getCustomerId($USER->profile['customercode']);
+            }
+            
+        } 
         
         $this->date=isset($date)?$date:time();
         $this->customerid=$customerid;

@@ -67,9 +67,9 @@ class coursedetails {
         $shortcode=isset($itp->shortcode)?$itp->shortcode:'';
         $score=0;
         $completado=false;
-        //Show the assessment of only finished courses
-        
-        if ($enddate<$currentdate){
+
+        //Show the assessment only of finished courses
+        if ($startdate<$currentdate){
             $completado=true;
             $score=$DB->get_records_sql("SELECT ROUND(AVG(finalgrade),2) AS finalscore FROM {user} u
                                 INNER JOIN mdl_grade_grades AS grades ON grades.userid=u.id
@@ -95,8 +95,8 @@ class coursedetails {
         $att=0;
         $completado=false;
 
-        //Show the attemdamce of only finished courses
-        if ($enddate<$currentdate){
+        //Show the attendamce only of running courses
+        if ($startdate<$currentdate){
             $completado=true;
             $att=$DB->get_records_sql("SELECT ROUND(AVG(finalgrade),2) AS finalscore FROM {user} u
                                 INNER JOIN mdl_grade_grades AS grades ON grades.userid=u.id

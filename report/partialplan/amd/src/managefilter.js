@@ -121,12 +121,12 @@ function showTemplateAssessment(response){
       Templates.appendNodeContents(content,html,js);
       const selectGroup=document.querySelector('#selgroupid');
       const desiredValue = response.selectedGroup;
-
+        
       let optionIndex=0;
     for (let i = 0; i < selectGroup.options.length; i++) {
         if (selectGroup.options[i].value === desiredValue) {
             optionIndex = i;
-            window.console.log(optionIndex);
+            
             break;
         }
     }

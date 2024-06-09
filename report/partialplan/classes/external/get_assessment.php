@@ -98,7 +98,7 @@ class get_assessment extends \core_external\external_api {
                     $formatedUser->startdate=$startdate;
                     $formatedUser->enddate=$enddate;
                     //Get the trainee assessment and attendance from userid and courseid
-                    $sql="SELECT AVG(finalgrade) as finalgrade, MAX(itemtype) as itemtype FROM (SELECT u.id,u.firstname,u.lastname,grades.finalgrade,grades.itemid, items.courseid, items.itemname, items.itemtype FROM mdl_user as u
+                    $sql="SELECT max(itemid) as id, AVG(finalgrade) as finalgrade, MAX(itemtype) as itemtype  FROM (SELECT u.id,u.firstname,u.lastname,grades.finalgrade,grades.itemid, items.courseid, items.itemname, items.itemtype FROM mdl_user as u
                         inner join mdl_grade_grades as grades on grades.userid=u.id
                         inner join mdl_grade_items as items on items.id=grades.itemid
                         where items.courseid=:courseid 
@@ -111,7 +111,7 @@ class get_assessment extends \core_external\external_api {
                         GROUP BY itemtype";
                     $datos_academicos=$DB->get_records_sql($sql, ['courseid'=>$courseid, 'userid'=>$userid]);
                     $datos_academicos=array_values($datos_academicos);
-                    
+                                        
                     $formatedUser->att=array_values(array_filter($datos_academicos,function($row){
                         return ($row->itemtype==='mod');
                     }))[0]->finalgrade;

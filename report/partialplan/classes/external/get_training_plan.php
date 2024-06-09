@@ -107,6 +107,7 @@ class get_training_plan extends \core_external\external_api {
                             'location'=>new external_value(PARAM_TEXT,'location'),
                             'provider'=>new external_value(PARAM_TEXT,'Provider'),
                             'lastupdate'=>new external_value(PARAM_INT,'Last update'),
+                            'terminado'=>new external_value(PARAM_BOOL,'If course has finished'),
                         ])
                     ),
                     'orderbystartdate'=>new external_value(PARAM_BOOL, 'if ordering by startdate'),

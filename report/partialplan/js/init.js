@@ -1,9 +1,11 @@
 const selcustomer=document.querySelector('#id_selcustomer');
-
-selcustomer.addEventListener('change',(e)=>{
+if (selcustomer!==null){
+  selcustomer.addEventListener('change',(e)=>{
     window.console.log(e.target.value);
     requestGroup(e.target.value);
-});
+  });
+} 
+
 
 const requestGroup=(customershortname)=>{
     const xhr=new XMLHttpRequest();

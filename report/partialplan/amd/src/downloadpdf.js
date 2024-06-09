@@ -180,7 +180,8 @@ async function createPdf(PDF,response){
         font: fontBold,
         color: PDF.rgb(0, 0, 0)
     });
-
+    window.console.log(listTrainees);
+    
 
     listTrainees.map((trainee,index)=>{
         if (index==10 || index==20 || index==30 || index==40 || index==50){
