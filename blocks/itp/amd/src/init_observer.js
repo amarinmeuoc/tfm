@@ -6,6 +6,7 @@ export const init=(token,customercode)=>{
 
     bosubmit.classList.remove('row');
 
+    removeOptions(selListTrainees);
     
         
         window.console.log("hola");
@@ -53,12 +54,19 @@ const updateListTrainees=(customercode,groupSelect,listTrainees,token)=>{
     xhr.onload = ()=>{
         reloadTraineeList(xhr,listTrainees)
     };
+
+    xhr.onprogress = (event)=>{
+        onProgressFunction(event,listTrainees);
+      } 
     
     xhr.onerror = function() {
         window.console.log("Solicitud fallida");
     };
 }
 
+const onProgressFunction=(event,listTrainees)=>{
+    //removeOptions(listTrainees);
+}
 
 const reloadTraineeList=(xhr,listTrainees)=>{
     if (xhr.readyState=== 4 && xhr. status === 200){
