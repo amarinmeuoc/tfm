@@ -18,7 +18,7 @@ const reloadAttendanceForm=()=>{
         if (this.response){
             const selectedCustomer=JSON.parse(this.response);
             
-            window.console.log(selectedCustomer);
+            
         } 
     }
 }

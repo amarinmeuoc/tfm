@@ -90,7 +90,6 @@ const onLoadFunction=(myXhr,firstname,lastname,token)=>{
 }
 
 const showTemplateItp=(response)=>{
-  window.console.log(response);
     Templates.renderForPromise('block_itp/itp',response)
     .then(({html,js})=>{
         const content=document.querySelector('.block_itp_content');

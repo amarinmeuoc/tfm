@@ -3,11 +3,10 @@ export const init = (customerid) => {
     trainee_list.forEach((node)=>{
         node.addEventListener('click',(e)=>{
             downloadcsv(e,customerid);
-            window.console.log("hecho");
+            
         });
     })
     
-    window.console.log("show trainees... ");
 }
 
 const downloadcsv = (e,customerid)=>{
@@ -51,7 +50,7 @@ const downloadcsv = (e,customerid)=>{
 const onLoadFunction=(myXhr)=>{
     if (myXhr.readyState=== 4 && myXhr. status === 200){
       const res=JSON.parse(myXhr.response);
-      window.console.log(res);
+
       //Prepare the excel for to be downloaded
       createExcelFromJSON(res);
   }

@@ -60,7 +60,7 @@ class block_totalassessment extends block_base {
         $this->content->footer = '';
         $this->page->requires->js('/blocks/totalassessment/assets/progressbar.min.js',true);
         $this->page->requires->js('/blocks/totalassessment/assets/calculateAss.js',true);
-       
+        $this->page->requires->css('/blocks/totalassessment/assets/styles.scss');
 
         $totalAss=0;
       

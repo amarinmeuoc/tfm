@@ -152,7 +152,9 @@ class AttendanceList {
         
         $startdate=isset($this->selected_date_start)?$this->selected_date_start:date('Y-m-d',time());
         $enddate=isset($this->selected_date_end)?$this->selected_date_end:date('Y-m-d',time());
+        $enddate=$enddate+86400;
         
+
         $present=($this->attendance_status->present)?'Present':'off';
         $absent=($this->attendance_status->absent)?'Absent':'off';
         $late=($this->attendance_status->late)?'Late%':'off';

@@ -89,7 +89,7 @@ const onLoadGroupListFunction=(myXhr,cid)=>{
         const res=JSON.parse(myXhr.response);
         
         //Getting the JSON Object so rebuilding the group Selector
-        window.console.log(res);
+        
         const selGroup=document.querySelector('#selgroupid');
         selGroup.innerHTML="";
         res.forEach(group=>{
@@ -156,7 +156,7 @@ const processRequestStart=(adaptedObj)=>{
     formData.append('params[0][attendanceStatus][statusExcused]',adaptedObj.attStatus.attEv);
     formData.append('params[0][offset]',adaptedObj.ofv);
     formData.append('params[0][customerid]',adaptedObj.cv);
-    window.console.log(adaptedObj);
+    
     xhr.send(formData);
     xhr.onload = (event) =>{
         onLoadFunction(xhr, adaptedObj.orderby, adaptedObj.order, adaptedObj.page, adaptedObj.ofv, adaptedObj.showCustomerSelect, adaptedObj.cv,adaptedObj.token);
@@ -176,7 +176,7 @@ const onLoadFunction=(myXhr, orderby, order, page, ofv, showCustomerSelect, cust
 
     if (myXhr.readyState===4 && myXhr.status===200){
         const res=JSON.parse(myXhr.response);
-        window.console.log("la pagina seleccionada es: ",page);
+        
         const formattedData={
             showCustomerSelect:showCustomerSelect,
             customerid:customerid,
@@ -198,7 +198,7 @@ const onLoadFunction=(myXhr, orderby, order, page, ofv, showCustomerSelect, cust
             token:token
         }
         showTemplateAttendance(formattedData);
-        window.console.log(res);
+       
     }
 }
 
@@ -263,7 +263,7 @@ function showTemplateAttendance(response){
                     e.preventDefault();
                     //const page=parseInt(document.querySelector('.pagination .active').textContent);
                     const page=1;
-                    window.console.log("Pagina seleccionada al ordenar es: ",page);
+                    
                     if (valuesObj.orderby===e.target.dataset.value)
                         valuesObj.order=(valuesObj.order==='ASC')?'DESC':'ASC';
                     const orderby=e.target.dataset.value;
@@ -283,7 +283,7 @@ function showTemplateAttendance(response){
                     
                     e.preventDefault();
                     pageval=parseInt(e.target.text);
-                    window.console.log("Pagina seleccionada al paginar es: ",page);
+                    
                     valuesObj.page=pageval;
                     processRequest(valuesObj);
                 })

@@ -513,6 +513,7 @@ class core_course_renderer extends plugin_renderer_base {
             $output = html_writer::tag('div', $content . $groupinglabel,
                     array('class' => 'contentwithoutlink ' . $textclasses));
         }
+        
         return $output;
     }
 

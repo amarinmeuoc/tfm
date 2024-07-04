@@ -97,7 +97,7 @@ const onLoadFunction=(myXhr,selectedGroup,token)=>{
             orderby:res[0].orderby,
             order:(res[0].order)
         }
-        window.console.log(formattedData);
+        
         showTemplateAssessment(formattedData);
     }
 }
@@ -120,19 +120,29 @@ function showTemplateAssessment(response){
     content.innerHTML='';
       Templates.appendNodeContents(content,html,js);
       const selectGroup=document.querySelector('#selgroupid');
+      const idsActuales=Array.from(selectGroup.options).map(option => option.value);
       const desiredValue = response.selectedGroup;
-        
+      //Checking if the user press submit first to ensure he updated the table
+      const encontrado=idsActuales.find(elem=>elem===desiredValue);
       let optionIndex=0;
-    for (let i = 0; i < selectGroup.options.length; i++) {
-        if (selectGroup.options[i].value === desiredValue) {
-            optionIndex = i;
-            
-            break;
+      if (encontrado){
+        for (let i = 0; i < selectGroup.options.length; i++) {
+            if (selectGroup.options[i].value === desiredValue) {
+                optionIndex = i;
+                
+                break;
+            }
         }
-    }
-
-    selectGroup.selelectedIndex=optionIndex;
-    selectGroup.value=desiredValue;
+    
+        selectGroup.selelectedIndex=optionIndex;
+        selectGroup.value=desiredValue;
+      } else {
+        const form=document.querySelector('#filterformid');
+        alert("Make sure you press submit before you filter");
+        form.submit();
+      }
+      
+    
 
     })
     .catch((error)=>displayException(error));

@@ -54,6 +54,12 @@
   $mform = new form_itp_route\formitp();
   $manageform = new \local_uploaditp\manageform($mform);
 
+  $token=$DB->get_record_sql("SELECT token FROM mdl_external_tokens 
+                            INNER JOIN mdl_user ON mdl_user.id=mdl_external_tokens.userid
+                            WHERE username=:username LIMIT 1", ['username'=>$USER->username]);
+$token=$token->token;
+
+  $PAGE->requires->js_call_amd('local_uploaditp/init', 'init',[$token]);
  $strpagetitle = get_string('pluginname','local_uploaditp');
  $strpageheader = get_string('title','local_uploaditp');
 

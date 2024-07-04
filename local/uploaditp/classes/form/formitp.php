@@ -37,9 +37,10 @@ class formitp extends \moodleform {
     public function definition() {
         // A reference to the form is stored in $this->formitp.
         // A common convention is to store it in a variable, such as `$mform`.
-
+        global $PAGE;
         $mform = $this->_form; // Don't forget the underscore!
-
+        
+        $PAGE->requires->css('/local/uploaditp/css/styles.css', false);
         $customers=$this->getListOfCustomers();
         $options=[];
         foreach ($customers as $obj) {
@@ -89,6 +90,7 @@ class formitp extends \moodleform {
         $mform->addElement('editor','email_editor',get_string('labeltextemaileditor', 'local_uploaditp'));
         $mform->setType('email_editor', PARAM_RAW);
         
+        $mform->addElement('button', 'removetables', get_string('boremove','local_uploaditp'),[]);
 
         $this->add_action_buttons();
     }

@@ -1,42 +1,21 @@
-.pagelayout-login #page {
-    background: lab(19 48.97 -82.36);
-    background-image: radial-gradient(circle at top left, rgba(0,82,255,1) 0%, rgba(9,9,121,1) 35%, rgba(2,0,36,1) 100%);
-    animation: brillo 3s ease 0s 1 normal forwards;   
-}
-.login-wrapper {
-    .img-logo img{
-        display: none;
-    }
-    @media only screen and (min-width:1000px){
-        .img-logo img{
-            display: block;
-			width: 300px;
-			height: auto;
-            animation: mylogoanimation 2s ease 0s 1 normal forwards;
-        }
-        justify-content: space-around;
-    }
+
+@import 'login';
+
+@import 'barranavegacionprincipal';
+@import 'coursesections';
+@import 'autocompleteform';
+
+.generaltable tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 95, 186,0.03);
+  }
+
+.generaltable tbody tr:hover {
+    color: #1d2125;
+    background-color: rgba(0, 96, 186, 0.200);
 }
 
-@keyframes brillo {
-    0% {
-		background-position: center bottom;
-		background-size: 100%;
-	}
-	100% {
-		background-position: center bottom;
-		background-size: 150%;
-	}
-}
-
-@keyframes mylogoanimation {
-	0% {
-		opacity: 0;
-		transform: translateX(-50px);
-	}
-
-	100% {
-		opacity: 1;
-		transform: translateX(0);
-	}
+h2 {
+  color: #005fba;
+    border-bottom: solid thin #005fba;
+    margin-bottom: 1em;
 }

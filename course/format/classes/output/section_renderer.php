@@ -264,6 +264,7 @@ abstract class section_renderer extends core_course_renderer {
                 'section_action_menu',
                 array('data-sectionid' => $section->id)
             );
+            
         }
 
         return $o;
@@ -371,6 +372,8 @@ abstract class section_renderer extends core_course_renderer {
             'data-sectionid' => $section->section,
             'data-sectionreturnid' => $sectionreturn
         ]);
+
+       
 
         $leftcontent = $this->section_left_content($section, $course, $onsectionpage);
         $o .= html_writer::tag('div', $leftcontent, array('class' => 'left side'));

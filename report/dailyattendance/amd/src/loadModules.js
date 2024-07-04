@@ -3,7 +3,7 @@ define(['report_dailyattendance/xlsx','report_dailyattendance/filesaver','report
     var wwwroot = M.cfg.wwwroot;
         function initManage() {
            //Do your java-script magic here
-           window.console.log("hola mundo");
+           
         }
         return {
             init: function () {

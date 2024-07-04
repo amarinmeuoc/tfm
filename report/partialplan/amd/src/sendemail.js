@@ -31,7 +31,7 @@ const traineesFunctionEvent=(e,customerid)=>{
         const url='./send_email.php';
         xhr.open('POST',url,true);
         const formData= new FormData();
-        window.console.log(e.detail.teeditor.text);
+        
         formData.append('messagebody',e.detail.teeditor.text);
         formData.append('to',e.detail.emailhidden);
         formData.append('subject',e.detail.tesubject);

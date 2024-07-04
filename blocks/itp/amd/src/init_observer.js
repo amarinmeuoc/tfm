@@ -8,8 +8,6 @@ export const init=(token,customercode)=>{
 
     removeOptions(selListTrainees);
     
-        
-        window.console.log("hola");
         updateListTrainees(customercode,groupSelect,selListTrainees,token);
     
 groupSelect.addEventListener('change',(ev)=>{
@@ -72,7 +70,7 @@ const reloadTraineeList=(xhr,listTrainees)=>{
     if (xhr.readyState=== 4 && xhr. status === 200){
         if (xhr.response){
             const list_trainees=JSON.parse(xhr.response);
-            window.console.log(list_trainees);
+            
             removeOptions(listTrainees);
 
             list_trainees.map(obj=>{

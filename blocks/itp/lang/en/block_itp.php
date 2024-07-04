@@ -27,7 +27,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname']= 'Bloque ITP Plugin';
+$string['pluginname']= 'ITP Block';
 $string['title']= 'Individual Training Plan';
 $string['titlelegend']= 'This block shows the trainee schedule';
 $string['itp:myaddinstance']= 'Añadir instancias ITP';

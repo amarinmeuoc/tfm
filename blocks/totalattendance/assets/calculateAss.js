@@ -2,8 +2,15 @@
 totalAtt=0;
 window.addEventListener('load',()=>{
     let assessment_arr=document.querySelectorAll('.linkatt');
+    // Convert NodeList to an array
+    assessment_arr = Array.prototype.slice.call(assessment_arr);
     let total=0;
     let cont=0;
+
+    //Avoiding duplicates
+    let hash={};
+    assessment_arr = assessment_arr.filter(o => hash[o.attributes.courseid.value] ? false : hash[o.attributes.courseid.value] = true);
+
     assessment_arr.forEach((link)=>{
         if (link.textContent!=='-'){
             total+=parseFloat(link.textContent);

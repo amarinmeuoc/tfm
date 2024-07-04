@@ -1,0 +1,127 @@
+<div class="result table-responsive">
+<div class="loader p-5 hide">
+    {{> core/loading }}
+</div>
+
+<table class="generaltable table-sm">
+<thead>
+<tr>
+{{^ifobserver}}<th><a class="orderby" href="#" data-value="customercode" data-order="{{order}}">Customer {{#orderbycustomer}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbycustomer}}</a></th>{{/ifobserver}}
+<th><a class="orderby" href="#" data-value="groupname" data-order="{{order}}">Vessel {{#orderbygroup}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbygroup}}</a></th>
+<th><a class="orderby" href="#" data-value="billid" data-order="{{order}}">Billid {{#orderbybillid}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbybillid}}</a></th>
+<th><a class="orderby" href="#" data-value="firstname" data-order="{{order}}">Firstname {{#orderbyname}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbyname}}</a></th>
+<th><a class="orderby" href="#" data-value="lastname" data-order="{{order}}">Lastname {{#orderbylastname}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbylastname}}</a></th>
+<th><a class="orderby" href="#" data-value="shortname" data-order="{{order}}">WBS {{#orderbywbs}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbywbs}}</a></th>
+<th><a class="orderby" href="#" data-value="fullname" data-order="{{order}}">Fullname {{#orderbycoursename}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbycoursename}}</a></th>
+<th><a class="orderby" href="#" data-value="startdate" data-order="{{order}}">Start date {{#orderbystartdate}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbystartdate}}</a></th>
+<th><a class="orderby" href="#" data-value="enddate" data-order="{{order}}">End date {{#orderbyenddate}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbyenddate}}</a></th>
+<th><a class="orderby" href="#" data-value="attendance" data-order="{{order}}">Attendance {{#orderbyatt}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbyatt}}</a></th>
+<th><a class="orderby" href="#" data-value="assessment" data-order="{{order}}">Assessment {{#orderbyass}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbyass}}</a></th>
+</tr>
+</thead>
+<tbody>
+{{#assessment_list}}
+<tr>
+    {{^ifobserver}}<td>{{customercode}}</td>{{/ifobserver}}
+    <td>{{groupname}}</td>
+    <td>{{billid}}</td>
+    <td>{{firstname}}</td>
+    <td>{{lastname}}</td>
+    <td>{{shortname}}</td>
+    <td>{{fullname}}</td>
+    <td>{{#userdate}} {{startdate}}, {{#str}} strftimedate, core_langconfig {{/str}} {{/userdate}}</td>
+    <td>{{#userdate}} {{enddate}}, {{#str}} strftimedate, core_langconfig {{/str}} {{/userdate}}</td>
+    <td>{{attendance}}</td>
+    <td>{{assessment}}</td>
+</tr>
+{{/assessment_list}}
+{{^assessment_list}}
+    <tr><td colspan="{{#ifobserver}}10{{/ifobserver}}{{^ifobserver}}11{{/ifobserver}}" class="text-center">No results found.</td></tr>
+{{/assessment_list}}
+</tbody>
+</table>
+<p> Displaying {{num_records}} results from {{num_total_records}}</p>
+<div>
+<button id="idexport" type="button" class="btn btn-info">Export to Excel</button>
+</div>
+</div>
+
+<div class="d-flex flex-row-reverse">
+    <nav id="{{$pagingbarid}}paging-bar-{{uniqid}}{{/pagingbarid}}"
+        class="ml-auto"
+        data-region="paging-bar"
+        data-ignore-control-while-loading="{{ignorecontrolwhileloading}}"
+        data-hide-control-on-single-page="{{hidecontrolonsinglepage}}"
+        {{#activepagenumber}}
+            data-active-page-number="{{.}}"
+        {{/activepagenumber}}
+        {{^activepagenumber}}
+            data-active-page-number="1"
+        {{/activepagenumber}}
+        
+        {{#arialabels.paginationnav}}
+            aria-label="{{.}}"
+        {{/arialabels.paginationnav}}
+        {{^arialabels.paginationnav}}
+            aria-label="{{#str}} pagedcontentnavigation, core {{/str}}"
+        {{/arialabels.paginationnav}}
+        {{#arialabels.paginationnavitemcomponents}}
+            data-aria-label-components-pagination-item="{{.}}"
+        {{/arialabels.paginationnavitemcomponents}}
+        {{^arialabels.paginationnavitemcomponents}}
+            data-aria-label-components-pagination-item="pagedcontentnavigationitem, core"
+        {{/arialabels.paginationnavitemcomponents}}
+        {{#arialabels.paginationactivenavitemcomponents}}
+            data-aria-label-components-pagination-active-item="{{.}}"
+        {{/arialabels.paginationactivenavitemcomponents}}
+        {{^arialabels.paginationactivenavitemcomponents}}
+            data-aria-label-components-pagination-active-item="pagedcontentnavigationactiveitem, core"
+        {{/arialabels.paginationactivenavitemcomponents}}
+        {{#barsize}}
+            data-bar-size="{{.}}"
+        {{/barsize}}
+    >
+        <ul class="pagination mb-0">
+        {{#barsize}}
+                {{< core/paged_content_paging_bar_item }}
+                    {{$linkattributes}}aria-hidden="true"{{/linkattributes}}
+                    {{$item-content}}
+                        &hellip;
+                    {{/item-content}}
+                    {{$attributes}}data-dots="beginning"{{/attributes}}
+                {{/ core/paged_content_paging_bar_item }}
+            {{/barsize}}
+              {{#pages}}
+              {{< core/paged_content_paging_bar_item }}
+                    {{$attributes}}data-page="true"{{/attributes}}
+                {{/ core/paged_content_paging_bar_item }}
+                  
+            {{/pages}}
+            {{#barsize}}
+                {{< core/paged_content_paging_bar_item }}
+                    {{$linkattributes}}aria-hidden="true"{{/linkattributes}}
+                    {{$item-content}}
+                        &hellip;
+                    {{/item-content}}
+                    {{$attributes}}data-dots="ending"{{/attributes}}
+                {{/ core/paged_content_paging_bar_item }}
+            {{/barsize}}
+        </ul>
+    </nav>
+
+           
+    </div>
+
+{{#js}}
+require(['report_coursereport/ordenable'], function(module){
+    module.init();
+});
+{{/js}}
+
+{{#js}}
+
+require(['report_coursereport/exportExcel','xlsx','filesaver','blobutil'], function(module,XLSX,filesaver,blobutil){
+    module.init(XLSX,filesaver,blobutil);
+});
+
+{{/js}}

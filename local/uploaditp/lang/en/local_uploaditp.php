@@ -43,4 +43,5 @@ $string['email_yes']= 'Yes';
 $string['email_no']= 'No';
 $string['labeltextemaileditor']='Write a text in case you want to send an email to all trainees informing about any ITP Update';
 $string['subject']="Subject";
+$string['boremove']="Reset tables itp and trainingplan";
 

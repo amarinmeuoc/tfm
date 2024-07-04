@@ -57,6 +57,7 @@ class block_totalattendance extends block_base {
         $this->content->footer = '';
         $this->page->requires->js('/blocks/totalattendance/assets/progressbar.min.js',true);
         $this->page->requires->js('/blocks/totalattendance/assets/calculateAss.js',true);
+        $this->page->requires->css('/blocks/totalattendance/assets/styles.scss');
 
         $totalAtt=0;
         $data = ['totalatt'=>$totalAtt]; 

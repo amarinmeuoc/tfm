@@ -47,7 +47,6 @@ bosubmit.addEventListener('click',(e)=>{
 });
 
 boremove.addEventListener('click',(e)=>{
-    window.console.log(selgroup.value);
     if (selgroup.value===''){
         alert('You must select a group');
         return;

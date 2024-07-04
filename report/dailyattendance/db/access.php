@@ -33,7 +33,7 @@
         'captype' => 'read',
         'contextlevel' => CONTEXT_COURSE,
         'archetypes' => [
-            'non-editing'=>CAP_ALLOW
+            'teacher'=>CAP_ALLOW
         ]
     ],
    

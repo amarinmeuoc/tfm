@@ -39,7 +39,7 @@
      * @return void
      */
     public function init() {
-        $this->title = get_string('pluginname', 'block_itp');
+        //$this->title = get_string('pluginname', 'block_itp');
         $this->url=new \moodle_url('/my/');
         $this->orderby=optional_param('orderby','startdate',PARAM_TEXT);
         $this->order = optional_param('order','ASC',PARAM_TEXT);

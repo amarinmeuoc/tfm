@@ -15,7 +15,7 @@ export const init=(PDF,customerid)=>{
             }
             
             startRequestServer(PDF,customerid,coursedetail,trainee_list);
-            window.console.log(e.target);
+            
         })
     });
 }
@@ -54,7 +54,7 @@ const startRequestServer=(PDF,customerid,coursedetail,trainee_list)=>{
 const onLoadFunction=(PDF,myXhr)=>{
     if (myXhr.readyState=== 4 && myXhr. status === 200){
       const res=JSON.parse(myXhr.response);
-      window.console.log(res);
+      
       //Prepare the excel for to be downloaded
       createPdf(PDF,res);
   }
@@ -72,6 +72,16 @@ async function createPdf(PDF,response){
     const pdfDoc = await PDF.PDFDocument.create();
     const font = await pdfDoc.embedFont(PDF.StandardFonts.Helvetica);
     const fontBold = await pdfDoc.embedFont(PDF.StandardFonts.HelveticaBold);
+
+    //Colocamos las imagenes
+    const logoNavantiaURL = 'pix/navantia-logo.png';
+    const logoNavantiaImageBytes = await fetch(logoNavantiaURL).then(res => res.arrayBuffer());
+    const logoNavantia = await pdfDoc.embedPng(logoNavantiaImageBytes);
+
+    const fondoURL = 'pix/marco-vertical-navantia.jpg';
+    const fondoURLImageBytes = await fetch(fondoURL).then(res => res.arrayBuffer());
+    const fondo = await pdfDoc.embedJpg(fondoURLImageBytes);
+
     listTrainees=response;
     let page= pdfDoc.addPage();
     const { width, height } = page.getSize();
@@ -82,11 +92,28 @@ async function createPdf(PDF,response){
     const textWidth = font.widthOfTextAtSize(text, textSize);
     const textHeight = font.heightAtSize(textSize);
     const verticalGap=textHeight/2;
+    const comienzo=120;
+
+    page.drawImage(fondo, {
+        x: 0,
+        y: 0,
+        width:page.getWidth(),
+        height:page.getHeight(),
+        
+      });
+
+    page.drawImage(logoNavantia, {
+    x: 45,
+    y: page.getHeight() -100,
+    width: 110, 
+    height: 60,
+    
+    });
 
     // Draw the string of text on the page
     page.drawText(text, {
       x: width/2-textWidth/2,
-      y: height-textHeight-verticalGap,
+      y: height-textHeight-verticalGap-comienzo,
       size: textSize,
       font: font,
       color: PDF.rgb(0, 0.53, 0.71),
@@ -100,7 +127,7 @@ async function createPdf(PDF,response){
     // Draw the string of text on the page
     page.drawText(courseTitle, {
         x: width/2-textCourseTitleWidth/2,
-        y: height-textCourseTitleHeight-verticalGap-textHeight-verticalGap,
+        y: height-textCourseTitleHeight-verticalGap-textHeight-verticalGap-comienzo,
         size: textCourseSize,
         font: font,
         color: PDF.rgb(0, 0.53, 0.71),
@@ -124,14 +151,14 @@ async function createPdf(PDF,response){
     const textBodyHeight = font.heightAtSize(textBodySize);
     page.drawText(textBody, {
         x: 40,
-        y: height-textCourseTitleHeight-verticalGap-textHeight-verticalGap-textBodyHeight-verticalGap-verticalGap,
+        y: height-textCourseTitleHeight-verticalGap-textHeight-verticalGap-textBodyHeight-verticalGap-verticalGap-comienzo,
         size: textBodySize,
         font: font,
         color: PDF.rgb(0, 0, 0),
         maxWidth: width-80, wordBreaks: [" "]
       })
 
-    let lineHeightPos=height-180;
+    let lineHeightPos=height-180-comienzo;
     page.drawLine({
     start: { x: 40, y: lineHeightPos },
     end: { x: width-40, y: lineHeightPos },
@@ -146,7 +173,7 @@ async function createPdf(PDF,response){
     const verticalFieldGap=textField1Height/2;
     page.drawText( field1, {
         x: 55,
-        y: height - 180 + textField1Height,
+        y: height - 180 + textField1Height-comienzo,
         size: textFieldSize,
         font: fontBold,
         color: PDF.rgb(0, 0, 0)
@@ -155,7 +182,7 @@ async function createPdf(PDF,response){
     const textField2Width = font.widthOfTextAtSize(field2, textFieldSize);
     page.drawText( field2, {
         x: 55+textField1Width+textField2Width,
-        y: height - 180 + textField1Height,
+        y: height - 180 + textField1Height-comienzo,
         size: textFieldSize,
         font: fontBold,
         color: PDF.rgb(0, 0, 0)
@@ -167,7 +194,7 @@ async function createPdf(PDF,response){
     const textField4Width = font.widthOfTextAtSize(field4, textFieldSize);
     page.drawText( field3, {
         x: width-55-textField3Width-textField4Width-30,
-        y: height - 180 + textField1Height,
+        y: height - 180 + textField1Height-comienzo,
         size: textFieldSize,
         font: fontBold,
         color: PDF.rgb(0, 0, 0)
@@ -175,22 +202,38 @@ async function createPdf(PDF,response){
 
     page.drawText( field4, {
         x: width-55-textField4Width,
-        y: height - 180 + textField1Height,
+        y: height - 180 + textField1Height-comienzo,
         size: textFieldSize,
         font: fontBold,
         color: PDF.rgb(0, 0, 0)
     });
-    window.console.log(listTrainees);
+   
     
 
     listTrainees.map((trainee,index)=>{
         if (index==10 || index==20 || index==30 || index==40 || index==50){
             page=pdfDoc.addPage();
 
+            page.drawImage(fondo, {
+                x: 0,
+                y: 0,
+                width:page.getWidth(),
+                height:page.getHeight(),
+                
+              });
+        
+            page.drawImage(logoNavantia, {
+            x: 45,
+            y: page.getHeight() -100,
+            width: 110, 
+            height: 60,
+            
+            });
+
             // Draw the string of text on the page
             page.drawText(text, {
                 x: width/2-textWidth/2,
-                y: height-textHeight-verticalGap,
+                y: height-textHeight-verticalGap-comienzo,
                 size: textSize,
                 font: font,
                 color: PDF.rgb(0, 0.53, 0.71),
@@ -198,7 +241,7 @@ async function createPdf(PDF,response){
 
             page.drawText(courseTitle, {
                 x: width/2-textCourseTitleWidth/2,
-                y: height-textCourseTitleHeight-verticalGap-textHeight-verticalGap,
+                y: height-textCourseTitleHeight-verticalGap-textHeight-verticalGap-comienzo,
                 size: textCourseSize,
                 font: font,
                 color: PDF.rgb(0, 0.53, 0.71),
@@ -206,13 +249,13 @@ async function createPdf(PDF,response){
             
             page.drawText(textBody, {
                 x: 40,
-                y: height-textCourseTitleHeight-verticalGap-textHeight-verticalGap-textBodyHeight-verticalGap-verticalGap,
+                y: height-textCourseTitleHeight-verticalGap-textHeight-verticalGap-textBodyHeight-verticalGap-verticalGap-comienzo,
                 size: textBodySize,
                 font: font,
                 color: PDF.rgb(0, 0, 0),
                 maxWidth: width-80, wordBreaks: [" "]
             })
-            lineHeightPos=height-180;
+            lineHeightPos=height-180-comienzo;
             page.drawLine({
                 start: { x: 40, y: lineHeightPos },
                 end: { x: width-40, y: lineHeightPos },
@@ -223,7 +266,7 @@ async function createPdf(PDF,response){
 
             page.drawText( field1, {
                 x: 55,
-                y: height - 180 + textField1Height,
+                y: height - 180 + textField1Height-comienzo,
                 size: textFieldSize,
                 font: fontBold,
                 color: PDF.rgb(0, 0, 0)
@@ -231,7 +274,7 @@ async function createPdf(PDF,response){
 
             page.drawText( field2, {
                 x: 55+textField1Width+textField2Width,
-                y: height - 180 + textField1Height,
+                y: height - 180 + textField1Height-comienzo,
                 size: textFieldSize,
                 font: fontBold,
                 color: PDF.rgb(0, 0, 0)
@@ -239,7 +282,7 @@ async function createPdf(PDF,response){
 
             page.drawText( field3, {
                 x: width-55-textField3Width-textField4Width-30,
-                y: height - 180 + textField1Height,
+                y: height - 180 + textField1Height-comienzo,
                 size: textFieldSize,
                 font: fontBold,
                 color: PDF.rgb(0, 0, 0)
@@ -247,7 +290,7 @@ async function createPdf(PDF,response){
 
             page.drawText( field4, {
                 x: width-55-textField4Width,
-                y: height - 180 + textField1Height,
+                y: height - 180 + textField1Height-comienzo,
                 size: textFieldSize,
                 font: fontBold,
                 color: PDF.rgb(0, 0, 0)

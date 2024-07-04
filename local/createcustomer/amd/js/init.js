@@ -44,7 +44,7 @@
         divAfterboRemove.classList.remove('align-items-start');
         divAfterboRemove.classList.remove('felement');
 
-        window.console.log(divAfterboAddNew);
+        
         
     })
 
@@ -88,7 +88,7 @@
     function reqHandlerAddElem(){
         if (this.readyState=== 4 && this. status === 200){
             if ((this.response*1)!==-1){ //If is -1 something went wrong and the customer code wasnt supplied
-                window.console.log(this.response);
+                
                 let option=document.createElement('option');
                 option.text=this.response+ ' - ' +teshortname.value + ' - ' + tename.value;
                 option.value=teshortname.value;
