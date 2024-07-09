@@ -95,7 +95,9 @@ const onLoadFunction=(myXhr,selectedGroup,token)=>{
             orderbystartdate:(res[0].orderbystartdate),
             orderbyenddate:(res[0].orderbyenddate),
             orderby:res[0].orderby,
-            order:(res[0].order)
+            order:(res[0].order),
+            minstartdate:(res[0].minstartdate),
+            maxenddate:(res[0].maxenddate)
         }
         
         showTemplateAssessment(formattedData);
