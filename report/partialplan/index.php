@@ -89,6 +89,18 @@ $trainee_form->set_data($toform);
 $trainee_form->display();
 $group=$training_plan->group;
 
+//Getting the total dates of the training plan
+$dates_trainingplan=$DB->get_records('trainingplan', ['customerid'=>$training_plan->customerid], 'startdate', 'startdate,enddate');
+$dates_trainingplan=array_values($dates_trainingplan);
+$startdate_arr=array_map(function($item){
+    return $item->startdate;
+},$dates_trainingplan);
+$enddate_arr=array_map(function($item){
+    return $item->enddate;
+},$dates_trainingplan);
+$minStartdate=min($startdate_arr);
+$maxEnddate=max($enddate_arr);
+
 $token=$DB->get_record_sql("SELECT token FROM mdl_external_tokens 
                             INNER JOIN mdl_user ON mdl_user.id=mdl_external_tokens.userid
                             WHERE username=:username LIMIT 1", ['username'=>$USER->username]);
@@ -103,6 +115,8 @@ $data = [
     'orderbyenddate'=>$orderby==='enddate'?true:false,
     'orderby'=>$orderby,
     'order'=>$order,
+    'minstartdate'=>$minStartdate,
+    'maxenddate'=>$maxEnddate
 ];
 
 

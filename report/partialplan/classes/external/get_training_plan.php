@@ -61,6 +61,20 @@ class get_training_plan extends \core_external\external_api {
         
         $list_of_group=$training_plan->group;
         
+        //Getting the total dates of the training plan
+        $dates_trainingplan=$DB->get_records('trainingplan', ['customerid'=>$customerid], 'startdate', 'startdate,enddate');
+        $dates_trainingplan=array_values($dates_trainingplan);
+        
+        $startdate_arr=array_map(function($item){
+            return $item->startdate;
+        },$dates_trainingplan);
+        
+        $enddate_arr=array_map(function($item){
+            return $item->enddate;
+        },$dates_trainingplan);
+        
+        $minStartdate=min($startdate_arr);
+        $maxEnddate=max($enddate_arr);
         
          // now security checks
          $context = \context_system::instance();
@@ -76,6 +90,8 @@ class get_training_plan extends \core_external\external_api {
                     'orderbyenddate'=>$orderbyenddate,
                     'orderby'=>$orderby,
                     'order'=>$order,
+                    'minstartdate'=>$minStartdate,
+                    'maxenddate'=>$maxEnddate
                 ],
        ];
        
@@ -113,7 +129,9 @@ class get_training_plan extends \core_external\external_api {
                     'orderbystartdate'=>new external_value(PARAM_BOOL, 'if ordering by startdate'),
                     'orderbyenddate'=>new external_value(PARAM_BOOL,'If ordergin by enddate'),
                     'orderby'=>new external_value(PARAM_TEXT,'what ordering has been applied'),
-                    'order'=>new external_value(PARAM_BOOL,'if is true or false')
+                    'order'=>new external_value(PARAM_BOOL,'if is true or false'),
+                    'minstartdate'=>new external_value(PARAM_TEXT,'Begining of the project'),
+                    'maxenddate'=>new external_value(PARAM_TEXT,'Ending of the project')
                 ]),
             
         );
