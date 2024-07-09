@@ -76,6 +76,13 @@
             $this->display_form($userInfo, $scheduleObj, $form_html);
         }
 
+        $maxDate=array_reduce($scheduleObj,function($acc,$currentValue){
+            return ($acc>$currentValue->enddate)?$acc:$currentValue->enddate;
+        },$scheduleObj[0]->enddate);
+        
+        
+        $ifcertificate=($maxDate<time() && $maxDate!==NULL)?true:false;
+
        $order=($this->order==='ASC')?false:true;
        $this->page->requires->js_init_call('startOrdering', array($order)); 
        $this->page->requires->js('/blocks/itp/js/ordering.js',false);
@@ -83,6 +90,7 @@
        $token=$DB->get_record_sql("SELECT token FROM mdl_external_tokens 
                             INNER JOIN mdl_user ON mdl_user.id=mdl_external_tokens.userid
                             WHERE username=:username LIMIT 1", ['username'=>$USER->username]);
+
         
        $data = [
         'token'=>($token)?$token->token:'',
@@ -95,7 +103,10 @@
         'orderbyass'=>$this->orderby==='ass'?true:false,
         'orderby'=>$this->orderby,
         'order'=>$this->order==='ASC'?false:true,
+        'ifcertificate'=>$ifcertificate
         ];
+
+        
            
         $this->content->text = $OUTPUT->render_from_template('block_itp/itpcontent', $data);
              

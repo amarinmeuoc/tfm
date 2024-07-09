@@ -1,8 +1,21 @@
 <div class="block_itp_table">
 <table class="generaltable table-sm">
-<caption>Showing the training plan of: {{user.firstname}} {{user.lastname}}<br>
-<span>Email: </span><a href="mailto:{{user.email}}?subject=Message from the LMS">{{user.email}}</a><br>
-<small class="text-info">Updated on: <em>{{#userdate}} {{itp.0.lastupdate}}, {{#str}} strftimedate, core_langconfig {{/str}} {{/userdate}}</em></small></caption>
+<caption>
+<dl class="itp-dl">
+<div class="d-flex justify-content-between">
+<dt>Selected Trainee:</dt> <dd >{{user.firstname}} {{user.lastname}}</dd>
+</div>
+<div class="d-flex justify-content-between">
+<dt>Billid:</dt> <dd>{{#user.billid}} {{user.billid}}{{/user.billid}}{{^user.billid}}-----{{/user.billid}}</dd>
+</div>
+<div class="d-flex justify-content-between">
+<dt>Email: </dt><dd><a href="mailto:{{user.email}}?subject=Message from the LMS">{{user.email}}</a></dd>
+</div>
+<div class="d-flex justify-content-between">
+<dt>Updated on:</dt> <dd><span class="badge bg-warning text-dark">{{#userdate}} {{itp.0.lastupdate}}, {{#str}} strftimedate, core_langconfig {{/str}} {{/userdate}}</span></dd>
+</div>
+</dl>
+</caption>
 
 <thead>
 <tr>
@@ -34,7 +47,7 @@
 </tbody>
 </table>
 </div>
-
+<button type="button" id="bocertificate" class='btn btn-success'>Download certificate</button>
 
 {{#js}}
 //Este código carga el archivo javascript compilado con grunt.
@@ -47,5 +60,31 @@ require(['block_itp/showAss'],function(module){
 require(['block_itp/showAtt'],function(module){
     module.init("{{token}}","{{itp.0.email}}","{{user.firstname}}" ,"{{user.lastname}}");
 });
+
+require(['block_itp/downloadpdf','/blocks/itp/js/pdf-lib.min.js'],function(module,PDF){
+    const billid='{{user.billid}}';
+    const firstname='{{user.firstname}}';
+    const lastname='{{user.lastname}}';
+    const email='{{user.email}}';
+    const user={
+        billid:billid,
+        firstname:firstname,
+        lastname:lastname,
+        email:email,
+        };
+
+    const coursenames=[{{#itp}}"{{coursename}}",{{/itp}}];
+    const coursecodes=[{{#itp}}"{{shortcode}}",{{/itp}}];
+    const coursestartdate=[{{#itp}}"{{startdate}}",{{/itp}}];
+    const courseenddate=[{{#itp}}"{{enddate}}",{{/itp}}];
+    const courseduration=[{{#itp}}"{{duration}}",{{/itp}}];
+    const courseatt=[{{#itp}}"{{attendance}}",{{/itp}}];
+    const courseass=[{{#itp}}"{{assessment}}",{{/itp}}];
+
+    const courses=[coursenames,coursecodes,coursestartdate,courseenddate,courseduration,courseatt,courseass];
+
+    module.init(PDF,user,courses);
+});
+
 
 {{/js}}
