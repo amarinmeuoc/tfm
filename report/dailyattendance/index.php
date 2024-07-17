@@ -53,7 +53,8 @@ $context=\context_course::instance(1);
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('report');
 $PAGE->set_title('Daily Attendance report');
-$PAGE->set_url(new moodle_url("/report/dailyattendance"));
+$url=new moodle_url("/report/dailyattendance");
+$PAGE->set_url($url);
 
 if (!has_capability('report/dailyattendance:view',$context)){   
     echo $OUTPUT->header();       
@@ -88,7 +89,7 @@ $group_selected=isset($group_list[0]->id)?$group_list[0]->id:'';
 $billid=null;
 $order='ASC';
 $orderby='DateAtt';
-$selected_page=1;
+$page=1;
 $offset=50;
 
 $attendance = new \report_dailyattendance\AttendanceList($customerid,$group_selected,$billid,$selected_date_start,$selected_date_end,$attendance_status,$offset,$order,$orderby);
@@ -122,9 +123,28 @@ $data=[
     'attendance_status'=>$attendance_status,
     'order'=>$order,
     'orderby'=>$orderby,
-    'selected_page'=>$selected_page,
     'offset'=>$offset,
-    'pages'=>$pages
+    'pages'=>$pages,
+    'hidecontrolonsinglepage'=> true,
+    'activepagenumber'=>$page,
+    'barsize'=>'small',
+    'previous'=>[
+            'page'=>($page-1<1)?$page:$page-1,
+            'url'=>$url
+        ],
+    'next'=>[
+        'page'=>($page+1>$totalPages)?$page:$page+1,
+        'url'=>$url
+    ],
+    'first'=>[
+        'page'=>1,
+        'url'=>$url
+    ],
+    'last'=>[
+        'page'=>$totalPages,
+        'url'=>$url
+    ],
+   
 ];
 
 

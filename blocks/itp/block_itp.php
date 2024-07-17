@@ -155,4 +155,16 @@
         $form_html = $formFilter->render();
        
     }
+
+    public function _self_test() {
+        if (empty($this->title)) {
+            return "The plugin does not have a title.";
+        }
+        if (!$this->is_content_appropriate()) {
+            return "The plugin content is not appropriate.";
+        }
+        // Add more checks as needed
+        return true; // All checks passed
+    }
+    
 }

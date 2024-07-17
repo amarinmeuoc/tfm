@@ -96,7 +96,7 @@ class AssessmentList {
         global $DB;
         $selected_date=isset($this->selected_date)?$this->selected_date:time();
 
-        $sql="SELECT id, customerid, groupid, customercode, groupname, billid, shortname, fullname,  min(start_date) as startdate, max(end_date) as enddate, max(firstname) as firstname, max(lastname) as lastname, max(email) as email, max(attendance) as attendance, avg(assessment) as assessment 
+        $sql="SELECT id, billid,customerid, groupid, customercode, groupname,  shortname, fullname,  min(start_date) as startdate, max(end_date) as enddate, max(firstname) as firstname, max(lastname) as lastname, max(email) as email, max(attendance) as attendance, avg(assessment) as assessment 
         FROM (SELECT DISTINCT
             itp.id as id,
             itp.customerid as customerid,

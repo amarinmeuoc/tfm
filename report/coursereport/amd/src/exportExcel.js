@@ -28,7 +28,7 @@ const exportToExcel=(e,XLSX,filesaver,blobutil)=>{
 
 const prepareDataToSend=(data)=>{
     const xhr=new XMLHttpRequest();
-    const url='http://'+window.location.hostname+'/webservice/rest/server.php';
+    const url=window.location.protocol+'//'+window.location.hostname+'/webservice/rest/server.php';
     xhr.open('POST',url,true);
  
     const formData= new FormData();

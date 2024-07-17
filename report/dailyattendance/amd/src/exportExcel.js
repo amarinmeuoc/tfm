@@ -2,6 +2,9 @@
 export const init=(XLSX, filesaver,blobutil,token)=>{
     const boexport=document.querySelector('#idexport');
     boexport.addEventListener('click',(e)=>{
+        const loader=document.querySelector('.loader');
+        loader.classList.remove('hide');
+        loader.classList.add('show');
         exportToExcel(e,XLSX,filesaver,blobutil,token);
     });
 }
@@ -25,7 +28,7 @@ const exportToExcel=(e,XLSX,filesaver,blobutil,token)=>{
 
 const prepareDataToSend=(data)=>{
     const xhr=new XMLHttpRequest();
-    const url='http://'+window.location.hostname+'/webservice/rest/server.php';
+    const url=window.location.protocol+'//'+window.location.hostname+'/webservice/rest/server.php';
     xhr.open('POST',url,true);
  
     const formData= new FormData();
@@ -54,6 +57,12 @@ const prepareDataToSend=(data)=>{
     xhr.onprogress = (event)=>{
         onProgressFunction(event);
     } 
+
+    xhr.onloadend=(event)=>{
+        const loader=document.querySelector('.loader');
+        loader.classList.remove('show');
+        loader.classList.add('hide');
+    };
     xhr.onerror = function() {
         window.console.log("Solicitud fallida");
     };

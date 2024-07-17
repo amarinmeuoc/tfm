@@ -382,8 +382,34 @@ async function createPDFAcroField(PDF, user, result){
 
 
 
-    const pdfDataUri=await pdfDoc.saveAsBase64({dataUri:true});
-    window.open(pdfDataUri);
+    // Genera el PDF y obtén los datos en formato Base64
+const pdfBase64 = await pdfDoc.saveAsBase64();
+
+// Convierte el Base64 a un array de bytes
+const byteCharacters = atob(pdfBase64);
+const byteNumbers = new Array(byteCharacters.length);
+for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
+}
+const byteArray = new Uint8Array(byteNumbers);
+
+// Crea un Blob a partir del array de bytes
+const blob = new Blob([byteArray], { type: 'application/pdf' });
+
+// Crea un objeto URL a partir del Blob
+const blobUrl = URL.createObjectURL(blob);
+
+// Crea un enlace temporal para descargar el archivo
+const link = document.createElement('a');
+link.href = blobUrl;
+link.download = 'documento.pdf';
+
+// Añade el enlace al documento y haz clic en él para forzar la descarga
+document.body.appendChild(link);
+link.click();
+
+// Remueve el enlace del documento
+document.body.removeChild(link);
 };
 
 function truncateString(str, maxLength) {

@@ -42,8 +42,9 @@
     <p> Displaying {{num_records}} results from {{num_total_records}}</p>
 </div>
     <div class="d-flex flex-row-reverse">
-    <nav id="{{$pagingbarid}}paging-bar-{{uniqid}}{{/pagingbarid}}"
-        class="ml-auto"
+    <nav
+        id="{{$pagingbarid}}paging-bar-{{uniqid}}{{/pagingbarid}}"
+        class="{{#showitemsperpageselector}}ml-auto{{/showitemsperpageselector}}"
         data-region="paging-bar"
         data-ignore-control-while-loading="{{ignorecontrolwhileloading}}"
         data-hide-control-on-single-page="{{hidecontrolonsinglepage}}"
@@ -53,7 +54,11 @@
         {{^activepagenumber}}
             data-active-page-number="1"
         {{/activepagenumber}}
-        
+        {{#itemsperpage}}
+            {{#active}}
+                data-items-per-page="{{value}}"
+            {{/active}}
+        {{/itemsperpage}}
         {{#arialabels.paginationnav}}
             aria-label="{{.}}"
         {{/arialabels.paginationnav}}
@@ -76,8 +81,28 @@
             data-bar-size="{{.}}"
         {{/barsize}}
     >
+
         <ul class="pagination mb-0">
-        {{#barsize}}
+            {{#previous}}
+                {{< core/paged_content_paging_bar_item }}
+                    {{$linkattributes}}aria-label="{{#str}}previouspage{{/str}}"{{/linkattributes}}
+                    {{$item-content}}
+                        <span class="icon-no-margin dir-rtl-hide" aria-hidden="true">{{#pix}} i/previous, core {{/pix}}</span>
+                        <span class="icon-no-margin dir-ltr-hide" aria-hidden="true">{{#pix}} i/next, core {{/pix}}</span>
+                    {{/item-content}}
+                    {{$attributes}}data-control="previous"{{/attributes}}
+                {{/ core/paged_content_paging_bar_item }}
+            {{/previous}}
+            {{#first}}
+                {{< core/paged_content_paging_bar_item }}
+                    {{$linkattributes}}aria-label="{{#str}}firstpage{{/str}}"{{/linkattributes}}
+                    {{$item-content}}
+                        {{#str}}first{{/str}}
+                    {{/item-content}}
+                    {{$attributes}}data-control="first"{{/attributes}}
+                {{/ core/paged_content_paging_bar_item }}
+            {{/first}}
+            {{#barsize}}
                 {{< core/paged_content_paging_bar_item }}
                     {{$linkattributes}}aria-hidden="true"{{/linkattributes}}
                     {{$item-content}}
@@ -86,11 +111,10 @@
                     {{$attributes}}data-dots="beginning"{{/attributes}}
                 {{/ core/paged_content_paging_bar_item }}
             {{/barsize}}
-              {{#pages}}
-              {{< core/paged_content_paging_bar_item }}
+            {{#pages}}
+                {{< core/paged_content_paging_bar_item }}
                     {{$attributes}}data-page="true"{{/attributes}}
                 {{/ core/paged_content_paging_bar_item }}
-                  
             {{/pages}}
             {{#barsize}}
                 {{< core/paged_content_paging_bar_item }}
@@ -101,6 +125,25 @@
                     {{$attributes}}data-dots="ending"{{/attributes}}
                 {{/ core/paged_content_paging_bar_item }}
             {{/barsize}}
+            {{#last}}
+                {{< core/paged_content_paging_bar_item }}
+                    {{$linkattributes}}aria-label="{{#str}}lastpage{{/str}}"{{/linkattributes}}
+                    {{$item-content}}
+                        {{#str}}last{{/str}}
+                    {{/item-content}}
+                    {{$attributes}}data-control="last"{{/attributes}}
+                {{/ core/paged_content_paging_bar_item }}
+            {{/last}}
+            {{#next}}
+                {{< core/paged_content_paging_bar_item }}
+                    {{$linkattributes}}aria-label="{{#str}}nextpage{{/str}}"{{/linkattributes}}
+                    {{$item-content}}
+                        <span class="icon-no-margin dir-rtl-hide" aria-hidden="true">{{#pix}} i/next, core {{/pix}}</span>
+                        <span class="icon-no-margin dir-ltr-hide" aria-hidden="true">{{#pix}} i/previous, core {{/pix}}</span>
+                    {{/item-content}}
+                    {{$attributes}}data-control="next"{{/attributes}}
+                {{/ core/paged_content_paging_bar_item }}
+            {{/next}}
         </ul>
     </nav>
 

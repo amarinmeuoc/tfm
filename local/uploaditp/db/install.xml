@@ -13,7 +13,7 @@
         <FIELD NAME="email" TYPE="char" LENGTH="250" NOTNULL="true" DEFAULT="None" SEQUENCE="false"/>
         <FIELD NAME="startdate" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="enddate" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-	      <FIELD NAME="course" TYPE="char" LENGTH="15" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+	      <FIELD NAME="course" TYPE="char" LENGTH="30" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" DEFAULT="None" SEQUENCE="false"/>
         <FIELD NAME="duration" TYPE="int" LENGTH="3" NOTNULL="true" DEFAULT="1" SEQUENCE="false"/>
         <FIELD NAME="location" TYPE="char" LENGTH="150" NOTNULL="false"  SEQUENCE="false"/>

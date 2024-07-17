@@ -45,6 +45,11 @@ export const init = (order,orderby,page, offset, showCustomerSelect,token) => {
 
     //Filtering...
     valuesObj.button.addEventListener('click',(e)=>{
+        const loader=document.querySelector('.loader');
+        const table=document.querySelector('.generaltable');
+        loader.classList.remove('hide');
+        loader.classList.add('show');
+        table.classList.add('hide');
         valuesObj.page=1; //Starting from page 1
         processRequest(valuesObj);
     },valuesObj)
@@ -63,7 +68,7 @@ const updateGroupList=(e,values)=>{
 
 const requestGroupList=(cid,values)=>{
     let xhr=new XMLHttpRequest();
-    const url='http://'+window.location.hostname+'/webservice/rest/server.php';
+    const url=window.location.protocol+'//'+window.location.hostname+'/webservice/rest/server.php';
     xhr.open('POST',url,true);
  
     const formData= new FormData();
@@ -135,7 +140,7 @@ const processRequest=(valuesObj)=>{
 
 const processRequestStart=(adaptedObj)=>{
     let xhr=new XMLHttpRequest();
-    const url='http://'+window.location.hostname+'/webservice/rest/server.php';
+    const url=window.location.protocol+'//'+window.location.hostname+'/webservice/rest/server.php';
     xhr.open('POST',url,true);
  
     const formData= new FormData();
@@ -161,18 +166,22 @@ const processRequestStart=(adaptedObj)=>{
     xhr.onload = (event) =>{
         onLoadFunction(xhr, adaptedObj.orderby, adaptedObj.order, adaptedObj.page, adaptedObj.ofv, adaptedObj.showCustomerSelect, adaptedObj.cv,adaptedObj.token);
     };
+    xhr.onloadstart=(event)=>{
+        showLoader(event);
+    }
     xhr.onprogress = (event)=>{
         onProgressFunction(event);
     } 
+    xhr.onloadend=(event)=>{
+        hideLoader(event);
+    }
     xhr.onerror = function() {
         window.console.log("Solicitud fallida");
     };
 }
 
 const onLoadFunction=(myXhr, orderby, order, page, ofv, showCustomerSelect, customerid,token)=>{
-    const loader=document.querySelector('.loader');
-    loader.classList.add('.hide');
-    loader.classList.remove('.show');
+    
 
     if (myXhr.readyState===4 && myXhr.status===200){
         const res=JSON.parse(myXhr.response);
@@ -185,9 +194,10 @@ const onLoadFunction=(myXhr, orderby, order, page, ofv, showCustomerSelect, cust
             num_total_records:res[0].num_total_records,
             order:(res[0].order==='ASC')?true:false,
             orderby:orderby,
-            selected_page:page,
+            activepagenumber:page,
             offset:ofv,
-            pages:res[0].pages,
+            pages:truncateArrayWithActiveMiddle(res[0].pages,3),
+            totalPages:res[0].pages.length,
             orderbydate:res[0].orderbydate,
             orderbybillid:res[0].orderbybillid,
             orderbygroup:res[0].orderbygroup,
@@ -195,18 +205,53 @@ const onLoadFunction=(myXhr, orderby, order, page, ofv, showCustomerSelect, cust
             orderbylastname:res[0].orderbylastname,
             orderbydescription:res[0].orderbydescription,
             orderbywbs:res[0].orderbywbs,
-            token:token
+            token:token,
+            barsize:(res[0].pages.length<=3)?'small':'large',
+            previous:[
+                {
+                    page:(page-1<1)?page:page-1,
+                    url:window.location.href,
+                }
+            ],
+            next:[
+                {
+                    page:(page+1<res[0].pages.length)?page:page+1,
+                    url:window.location.href,
+                }
+            ],
+            first:[
+                {
+                    page:1,
+                    url:window.location.href,
+                }
+            ],
+            last:[
+                {
+                    page:res[0].pages.length,
+                    url:window.location.href,
+                }
+            ]
         }
         showTemplateAttendance(formattedData);
        
     }
 }
-
+const showLoader=(event)=>{
+    const loader=document.querySelector('.loader');
+    loader.classList.remove('hide');
+    loader.classList.add('show');
+}
 const onProgressFunction=(event) =>{
     console.log(`Uploaded ${event.loaded} of ${event.total}`);
+    
+}
+
+const hideLoader=(event)=>{
     const loader=document.querySelector('.loader');
-    loader.classList.remove('.hide');
-    loader.classList.add('.show');
+    const table=document.querySelector('.generaltable');
+    loader.classList.remove('show');
+    loader.classList.add('hide');
+    table.classList.remove('hide');
 }
 
 function showTemplateAttendance(response){
@@ -232,9 +277,8 @@ function showTemplateAttendance(response){
             const showCustomerSelect=response.showCustomerSelect;
             const offset=response.offset;
             const orderby=response.orderby;
-            const page=response.selected_page;
+            const page=response.activepagenumber;
             const token=response.token;
-
             const valuesObj={
                 order:order,
                 orderby:orderby,
@@ -280,9 +324,20 @@ function showTemplateAttendance(response){
                     pages.forEach(elem=>{
                         elem.classList.remove('active');
                     });
-                    
+                    window.console.log("paginacion");
                     e.preventDefault();
-                    pageval=parseInt(e.target.text);
+                    let pageval=valuesObj.page;
+                    if (/First/.test(e.target.text))
+                        pageval=1;
+                    if (/Last/.test(e.target.text))
+                        pageval=response.totalPages;
+                    if (/\d/.test(e.target.text))
+                        pageval=parseInt(e.target.text);
+                    
+                    if (e.target.closest('a').attributes['aria-label'].value==='Next page') 
+                        pageval=(valuesObj.page+1<=response.totalPages)?valuesObj.page+1:valuesObj.page;
+                    if (e.target.closest('a').attributes['aria-label'].value==='Previous page')
+                        pageval=(valuesObj.page-1<1)?valuesObj.page:valuesObj.page-1;
                     
                     valuesObj.page=pageval;
                     processRequest(valuesObj);
@@ -293,3 +348,28 @@ function showTemplateAttendance(response){
     })
     .catch((error)=>displayException(error));
   }
+
+  function truncateArrayWithActiveMiddle(arr, maxLength) {
+    const activeIndex = arr.indexOf(arr.find(item => item.active)); // Combine find and indexOf
+  
+    // Handle cases where there's no active element or less than maxLength elements
+    if (activeIndex === -1 || arr.length <= maxLength) {
+      return arr;
+    }
+  
+    // Similar logic to calculate before and after lengths
+    const halfLength = Math.floor(maxLength / 2);
+    const beforeLength = Math.min(halfLength, activeIndex);
+    const afterLength = Math.min(halfLength, arr.length - activeIndex - 1);
+  
+    // Use a loop to iterate and build the truncated array
+    const truncatedArray = [];
+    for (let i = activeIndex - beforeLength; i <= activeIndex + afterLength; i++) {
+      if (i >= 0 && i < arr.length) { // Ensure we stay within array bounds
+        truncatedArray.push(arr[i]);
+      }
+    }
+  
+    return truncatedArray;
+  }
+  
