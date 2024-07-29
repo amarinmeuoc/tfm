@@ -78,12 +78,18 @@ const requestGroupList=(cid,values)=>{
     formData.append('params[0][customerid]',cid);
 
     xhr.send(formData);
+    xhr.onloadstart=(event)=>{
+        showLoader(event);
+    };
     xhr.onload = (event) =>{
         onLoadGroupListFunction(xhr, cid);
     };
     xhr.onprogress = (event)=>{
         onProgressFunction(event);
-    } 
+    };
+    xhr.onloadend=(event)=>{
+        hideLoader(event);
+    }
     xhr.onerror = function() {
         window.console.log("Solicitud fallida");
     };
@@ -162,7 +168,10 @@ const processRequestStart=(adaptedObj)=>{
     formData.append('params[0][offset]',adaptedObj.ofv);
     formData.append('params[0][customerid]',adaptedObj.cv);
     
-    xhr.send(formData);
+    setTimeout(()=>{
+        xhr.send(formData);
+    },100);
+    
     xhr.onload = (event) =>{
         onLoadFunction(xhr, adaptedObj.orderby, adaptedObj.order, adaptedObj.page, adaptedObj.ofv, adaptedObj.showCustomerSelect, adaptedObj.cv,adaptedObj.token);
     };
@@ -196,7 +205,7 @@ const onLoadFunction=(myXhr, orderby, order, page, ofv, showCustomerSelect, cust
             orderby:orderby,
             activepagenumber:page,
             offset:ofv,
-            pages:truncateArrayWithActiveMiddle(res[0].pages,3),
+            pages:truncateArrayWithActiveMiddle(res[0].pages,8),
             totalPages:res[0].pages.length,
             orderbydate:res[0].orderbydate,
             orderbybillid:res[0].orderbybillid,
@@ -240,6 +249,8 @@ const showLoader=(event)=>{
     const loader=document.querySelector('.loader');
     loader.classList.remove('hide');
     loader.classList.add('show');
+    const table=document.querySelector('.generaltable');
+    table.classList.add('hide');
 }
 const onProgressFunction=(event) =>{
     console.log(`Uploaded ${event.loaded} of ${event.total}`);

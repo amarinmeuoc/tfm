@@ -82,6 +82,7 @@ class coursereport_form extends \moodleform {
                 $course_array[$elem->shortname]=$elem->shortname."_".$elem->fullname;
         }
 
+
         $options = array(                                                                                                           
             'multiple' => false,                                                  
             'noselectionstring' => 'Use the select box below to search a course',

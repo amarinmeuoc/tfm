@@ -71,7 +71,7 @@
 <hr>
 <div id="content">
 <div class="result table-responsive">
-<div class="loader p-5 hide">
+<div class="loader p-5 hide text-center">
     {{> core/loading }}
 </div>
     <table class="generaltable table-sm" >
@@ -173,29 +173,13 @@
                     {{$attributes}}data-control="first"{{/attributes}}
                 {{/ core/paged_content_paging_bar_item }}
             {{/first}}
-            {{#barsize}}
-                {{< core/paged_content_paging_bar_item }}
-                    {{$linkattributes}}aria-hidden="true"{{/linkattributes}}
-                    {{$item-content}}
-                        &hellip;
-                    {{/item-content}}
-                    {{$attributes}}data-dots="beginning"{{/attributes}}
-                {{/ core/paged_content_paging_bar_item }}
-            {{/barsize}}
+            
             {{#pages}}
                 {{< core/paged_content_paging_bar_item }}
                     {{$attributes}}data-page="true"{{/attributes}}
                 {{/ core/paged_content_paging_bar_item }}
             {{/pages}}
-            {{#barsize}}
-                {{< core/paged_content_paging_bar_item }}
-                    {{$linkattributes}}aria-hidden="true"{{/linkattributes}}
-                    {{$item-content}}
-                        &hellip;
-                    {{/item-content}}
-                    {{$attributes}}data-dots="ending"{{/attributes}}
-                {{/ core/paged_content_paging_bar_item }}
-            {{/barsize}}
+            
             {{#last}}
                 {{< core/paged_content_paging_bar_item }}
                     {{$linkattributes}}aria-label="{{#str}}lastpage{{/str}}"{{/linkattributes}}

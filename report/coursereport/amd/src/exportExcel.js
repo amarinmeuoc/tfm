@@ -48,18 +48,43 @@ const prepareDataToSend=(data)=>{
     formData.append('params[0][wbs]',data.wbs);
     
     
-
-    xhr.send(formData);
+    setTimeout(()=>{
+        xhr.send(formData);
+    },100);
+    
     xhr.onload=(event)=>{
         onLoadFunction(xhr);
+    }
+
+    xhr.onloadstart=(event)=>{
+        showLoader(event);
     }
 
     xhr.onprogress = (event)=>{
         onProgressFunction(event);
     } 
+    xhr.onloadend=(event)=>{
+        hideLoader(event);
+    }
     xhr.onerror = function() {
         window.console.log("Solicitud fallida");
     };
+    const showLoader=(event)=>{
+        const loader=document.querySelector('.loader');
+        const table=document.querySelector('.generaltable');
+        loader.classList.remove('hide');
+        loader.classList.add('show');
+        table.classList.add('hide');
+      
+      }
+      
+      const hideLoader=(event)=>{
+        const loader=document.querySelector('.loader');
+        const table=document.querySelector('.generaltable');
+        loader.classList.remove('show');
+        loader.classList.add('hide');
+        table.classList.remove('hide');
+      }
 
 }
 

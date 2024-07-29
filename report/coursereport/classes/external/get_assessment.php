@@ -6,6 +6,8 @@ use \core_external\external_multiple_structure as external_multiple_structure;
 use \core_external\external_single_structure as external_single_structure;
 use \core_external\external_value as external_value;
 
+
+
 class get_assessment extends \core_external\external_api {
 /**
      * Returns description of method parameters
@@ -40,6 +42,7 @@ class get_assessment extends \core_external\external_api {
     public static function execute($params) {
         global $DB,$USER;
         
+        $url=new \moodle_url('/report/coursereport/index.php');
         // Validate parameters
         $request=self::validate_parameters(self::execute_parameters(), ['params'=>$params]);
         
@@ -86,7 +89,26 @@ class get_assessment extends \core_external\external_api {
                 'orderbycoursename'=>$orderby==='fullname'?true:false,
                 'orderbyatt'=>$orderby==='attendance'?true:false,
                 'orderbyass'=>$orderby==='assessment'?true:false,
-                ]
+                'hidecontrolonsinglepage'=>true,
+                'activepagenumber'=>$page,
+                'barsize'=>'small',
+                'previous'=>[
+                    (object)['page'=>($page-1<1)?$page:$page-1,
+                    'url'=>'']
+                ],
+                'next'=>[
+                    (object)['page'=>($page+1>count($data[1]))?$page:$page+1,
+                    'url'=>'']
+                ],
+                'first'=>[
+                    (object)['page'=>1,
+                    'url'=>'']
+                ],
+                'last'=>[
+                    (object)['page'=>count($data[1]),
+                    'url'=>'']
+                ],
+            ]
         ];
         
         return $result;     
@@ -114,7 +136,7 @@ class get_assessment extends \core_external\external_api {
                         'email'=>new external_value(PARAM_TEXT, 'email'),
                         'attendance'=>new external_value(PARAM_TEXT, 'Attendance score'),
                         'assessment'=>new external_value(PARAM_TEXT, 'Assessment score'),
-                    ])
+                    ]) 
                     ),
                 'ifobserver'=>new external_value(PARAM_BOOL, 'If observer or not'),
                 'pages'=>new external_multiple_structure(
@@ -137,6 +159,33 @@ class get_assessment extends \core_external\external_api {
                 'orderbycoursename'=>new external_value(PARAM_BOOL, 'Order records'),
                 'orderbyatt'=>new external_value(PARAM_BOOL, 'Order records'),
                 'orderbyass'=>new external_value(PARAM_BOOL, 'Order records'),
+                'hidecontrolonsinglepage'=>new external_value(PARAM_BOOL, 'Order records'),
+                'activepagenumber'=>new external_value(PARAM_INT, 'active page number'),
+                'barsize'=>new external_value(PARAM_TEXT, 'small / large navbar size'),
+                'previous'=>new external_multiple_structure(
+                    new external_single_structure([
+                        'page'=>new external_value(PARAM_INT, 'page number'),
+                        'url'=>new external_value(PARAM_TEXT, 'url')
+                    ])
+                    ),
+                'next'=>new external_multiple_structure(
+                    new external_single_structure([
+                        'page'=>new external_value(PARAM_INT, 'page number'),
+                        'url'=>new external_value(PARAM_TEXT, 'url')
+                    ])
+                    ),
+                'first'=>new external_multiple_structure(
+                    new external_single_structure([
+                        'page'=>new external_value(PARAM_INT, 'page number'),
+                        'url'=>new external_value(PARAM_TEXT, 'url')
+                    ])
+                    ),
+                'last'=>new external_multiple_structure(
+                    new external_single_structure([
+                        'page'=>new external_value(PARAM_INT, 'page number'),
+                        'url'=>new external_value(PARAM_TEXT, 'url')
+                    ])
+                    ),
             ])
         );
     }

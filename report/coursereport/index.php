@@ -31,6 +31,7 @@ require_login();
 $order = optional_param('order', 'ASC', PARAM_TEXT);
 $orderby = optional_param('orderby', 'startdate', PARAM_TEXT);
 $PAGE->requires->js_call_amd('report_coursereport/loadModules', 'init');
+//$PAGE->requires->css('/report/coursereport/css/styles',true);
 $url=new moodle_url('/report/coursereport/index.php');
 
 
