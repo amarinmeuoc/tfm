@@ -320,6 +320,18 @@ class schedule {
                 else
                     return $obj2->assessment <=> $obj1->assessment;
                 break;
+            case 'course':
+                if ($this->order=='ASC')
+                    return $obj1->coursename <=> $obj2->coursename;
+                else
+                    return $obj2->coursename <=> $obj1->coursename;
+                break;
+            case 'duration':
+                if ($this->order=='ASC')
+                    return $obj1->duration <=> $obj2->duration;
+                else
+                    return $obj2->duration <=> $obj1->duration;
+                break;
             
             default:
                 # code...

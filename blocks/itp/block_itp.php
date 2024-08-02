@@ -101,6 +101,8 @@
         'orderbyenddate'=>$this->orderby==='enddate'?true:false,
         'orderbyatt'=>$this->orderby==='att'?true:false,
         'orderbyass'=>$this->orderby==='ass'?true:false,
+        'orderbycourse'=>$this->orderby==='course'?true:false,
+        'orderbyduration'=>$this->orderby==='duration'?true:false,
         'orderby'=>$this->orderby,
         'order'=>$this->order==='ASC'?false:true,
         'ifcertificate'=>$ifcertificate

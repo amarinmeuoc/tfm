@@ -19,8 +19,8 @@
 
 <thead>
 <tr>
-    <th id="course" scope="col">Course</th>
-    <th id="duration" scope="col">Duration</th>
+    <th id="course" scope="col"><a id="c-link" href="{{url}}">Course {{#orderbycourse}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbycourse}}</a></th>
+    <th id="duration" scope="col"><a id="d-link" href="{{url}}">Duration {{#orderbyduration}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbyduration}}</a></th>
     <th id="startdate" scope="col"><a id="sd-link" href="{{url}}">Start date {{#orderbystartdate}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbystartdate}}</a></th>
     <th id="enddate" scope="col"><a id="ed-link" href="{{url}}">End date {{#orderbyenddate}}{{#order}}&uarr;{{/order}}{{^order}}&darr;{{/order}}{{/orderbyenddate}}</a></th>
     <th id="location" scope="col">Location</th>

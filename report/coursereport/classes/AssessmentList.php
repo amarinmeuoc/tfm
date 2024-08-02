@@ -163,7 +163,7 @@ class AssessmentList {
         $list=[];
         $listAssessment=$DB->get_recordset_sql($sql,
                             array('customerid'=>$this->customerid,'groupid' => $this->groupid, 
-                            'billid' => ($this->billid==='' || $this->billid===null)?'%':'%'.strtoupper($this->billid).'%', 'startdate'=>$selected_date, 
+                            'billid' => ($this->billid==='' || $this->billid===null)?'%':'%'.strtoupper($this->billid).'%', 'startdate'=>$selected_date+86400, 
                             'enddate'=>$selected_date, 'shortname'=>($this->wbs==='' || $this->wbs===null)?'%':'%'.strtoupper($this->wbs).'%'),0,0);
         
         
