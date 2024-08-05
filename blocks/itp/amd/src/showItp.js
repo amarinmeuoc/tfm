@@ -56,6 +56,7 @@ const onLoadFunction=(myXhr,firstname,lastname,token)=>{
                 firstname:firstname,
                 lastname:lastname,
                 email:(res.length>0)?res[0].email:'',
+                billid:(res.length>0)?res[0].billid:''
             },
           itp: res.map(item => {
             // Customize object properties for the template as needed

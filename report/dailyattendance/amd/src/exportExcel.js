@@ -94,9 +94,10 @@ const createExcelFromJSON=(res,op)=>{
         listado=res[0].attendance_list.map(elem=>{
             const date=new Date(elem.dateatt*1000);
             const year=date.getFullYear();
-            const month=date.getMonth()+1;
-            const day=date.getDate()+1;
-            elem.dateatt=new Date(year+"-"+month+"-"+day);
+            const month=date.getMonth();
+            const day=date.getDate();
+            elem.dateatt=new Date(year,month,day);
+            elem.dateatt.setDate(elem.dateatt.getDate()+1);
             return Object.values(elem);
         });
         let titles=Object.keys(res[0].attendance_list[0]);

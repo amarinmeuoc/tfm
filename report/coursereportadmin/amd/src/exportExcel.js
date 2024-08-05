@@ -3,27 +3,33 @@ export const init=(XLSX, filesaver,blobutil)=>{
     const boexportAss=document.querySelector('#id_export_ass');
     const boexportAtt=document.querySelector('#id_export_att');
     const boexportTrainee=document.querySelector('#id_export_trainee');
+    
+
+
 
     boexportAss.addEventListener('click',(e)=>{
-        exportToExcel(e,XLSX,filesaver,blobutil,'coursereport');
+        const customerid=document.querySelector('#selcustomer').value;
+        exportToExcel(e,XLSX,filesaver,blobutil,'coursereport',customerid);
     });
 
     boexportAtt.addEventListener('click',(e)=>{
-        exportToExcel(e,XLSX,filesaver,blobutil,'dailyattendancereport');
+        const customerid=document.querySelector('#selcustomer').value;
+        exportToExcel(e,XLSX,filesaver,blobutil,'dailyattendancereport',customerid);
     });
 
     boexportTrainee.addEventListener('click',(e)=>{
-        exportToExcel(e,XLSX,filesaver,blobutil,'traineereport');
+        const customerid=document.querySelector('#selcustomer').value;
+        exportToExcel(e,XLSX,filesaver,blobutil,'traineereport',customerid);
     });
 }
 
-const exportToExcel=(e,XLSX,filesaver,blobutil,op)=>{
+const exportToExcel=(e,XLSX,filesaver,blobutil,op,customerid)=>{
     const token=document.querySelector('input[name="token"]').value;
     
-    prepareDataToSend(token,op);
+    prepareDataToSend(token,op,customerid);
 }
 
-const prepareDataToSend=(token,op)=>{
+const prepareDataToSend=(token,op,customerid)=>{
     const xhr=new XMLHttpRequest();
     const url='http://'+window.location.hostname+'/webservice/rest/server.php';
     xhr.open('POST',url,true);
@@ -46,6 +52,7 @@ const prepareDataToSend=(token,op)=>{
     
     formData.append('moodlewsrestformat','json');
     formData.append('params[0][request]',op);
+    formData.append('params[0][customerid]',customerid);
     
    
     xhr.send(formData);

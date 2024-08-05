@@ -16,6 +16,7 @@ class get_total_dailyattendance extends \core_external\external_api {
             'params'=>new external_multiple_structure(
                 new external_single_structure([
                     'request'=>new external_value(PARAM_TEXT,'Key for requesting the dailyattendance'),
+                    'customerid'=>new external_value(PARAM_INT,'Customer id'),
                 ])
             ) 
         ]);
@@ -37,8 +38,15 @@ class get_total_dailyattendance extends \core_external\external_api {
          self::validate_context($context);
          require_capability('webservice/rest:use', $context);
          $value=$request['params'][0]['request'];
+         $customerid=$request['params'][0]['customerid'];
+         $shortname='%';
          if ($value!=='dailyattendancereport')
             die;
+        if ($customerid!==-1){
+            $customer=$DB->get_record('customer', ['id'=>$customerid], 'shortname');
+            $shortname=$customer->shortname;
+        } 
+        
         
         $sub_sql="(SELECT DISTINCT
             att.course AS courseid,
@@ -92,11 +100,12 @@ class get_total_dailyattendance extends \core_external\external_api {
             (description) as description, 
             MAX(UPPER(feedback)) as feedback  FROM ".$sub_sql." 
             group by DateAtt, Nomducours, description, nom, Prenom
+            having customercode like :shortname
             ORDER BY DateAtt ASC ";
         
       
         $list=[];
-        $listAttendance=$DB->get_recordset_sql($sql,[],0,0);
+        $listAttendance=$DB->get_recordset_sql($sql,['shortname'=>$shortname],0,0);
         
         foreach ($listAttendance as $record) {
             $list[]=$record;

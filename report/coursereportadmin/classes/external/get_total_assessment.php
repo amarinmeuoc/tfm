@@ -15,7 +15,8 @@ class get_total_assessment extends \core_external\external_api {
         return new external_function_parameters([
             'params'=>new external_multiple_structure(
                 new external_single_structure([
-                    'request'=>new external_value(PARAM_TEXT,'Customer shortname'),
+                    'request'=>new external_value(PARAM_TEXT,'Choosen option'),
+                    'customerid'=>new external_value(PARAM_INT,'Customer id'),
                 ])
             ) 
         ]);
@@ -37,6 +38,8 @@ class get_total_assessment extends \core_external\external_api {
          self::validate_context($context);
          require_capability('webservice/rest:use', $context);
          $value=$request['params'][0]['request'];
+         $customerid=$request['params'][0]['customerid'];
+         
          if ($value!=='coursereport')
             die;
         
@@ -77,10 +80,20 @@ class get_total_assessment extends \core_external\external_api {
                                 and items.itemname NOT REGEXP '[Aa]ttitude' 
                                 and items.itemname NOT REGEXP '[Pp]articipation' 
                                 and items.itemname NOT REGEXP '[Aa]chieved [Ll]evel' 
-                                and grades.finalgrade!='NULL') 
-        AS RESULT
-            GROUP BY customerid,groupid,billid,shortname,startdate,fullname";
-         $listAssessment=$DB->get_recordset_sql($sql, [], 0, 0);
+                                and grades.finalgrade!='NULL'";
+            if ($customerid!=-1){
+                $sql.="AND customerid=:customerid) 
+                        AS RESULT
+                            GROUP BY customerid,groupid,billid,shortname,startdate,fullname";
+                $listAssessment=$DB->get_recordset_sql($sql, ['customerid'=>$customerid], 0, 0);
+            } else {
+                $sql.=") 
+                        AS RESULT
+                            GROUP BY customerid,groupid,billid,shortname,startdate,fullname";
+                $listAssessment=$DB->get_recordset_sql($sql, [], 0, 0);
+            }
+                                
+         
          
         $list=[];
          foreach ($listAssessment as $record) {

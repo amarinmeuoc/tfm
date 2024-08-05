@@ -45,6 +45,7 @@ linkDomEndDate.addEventListener('click',x=>{
     }
 });
 linkDomAtt.addEventListener('click',x=>{
+    window.console.log("ar carajo");
     x.preventDefault();
     orderbyField.setAttribute('value','att');
     if (document.readyState==='complete'){

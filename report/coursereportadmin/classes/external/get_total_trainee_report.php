@@ -15,7 +15,8 @@ class get_total_trainee_report extends \core_external\external_api {
         return new external_function_parameters([
             'params'=>new external_multiple_structure(
                 new external_single_structure([
-                    'request'=>new external_value(PARAM_TEXT,'Customer shortname'),
+                    'request'=>new external_value(PARAM_TEXT,'Choosen option'),
+                    'customerid'=>new external_value(PARAM_INT,'Customer id'),
                 ])
             ) 
         ]);
@@ -37,6 +38,9 @@ class get_total_trainee_report extends \core_external\external_api {
          self::validate_context($context);
          require_capability('webservice/rest:use', $context);
          $value=$request['params'][0]['request'];
+         $customerid=$request['params'][0]['customerid'];
+         
+
          if ($value!=='traineereport')
             die;
         
@@ -80,7 +84,15 @@ class get_total_trainee_report extends \core_external\external_api {
                                 and grades.finalgrade!='NULL') 
         AS RESULT
             GROUP BY customerid,groupid,billid,shortname";
-         $listAssessment=$DB->get_recordset_sql($sql, [], 0, 0);
+        
+        if ($customerid!==-1){
+            $sql .= " HAVING customerid=:customerid";
+            $listAssessment=$DB->get_recordset_sql($sql, ['customerid'=>$customerid], 0, 0);
+        } else {
+            $listAssessment=$DB->get_recordset_sql($sql, [], 0, 0);
+        }
+            
+         
         
          
          function isDuplicate($object, $seenObjects) {
