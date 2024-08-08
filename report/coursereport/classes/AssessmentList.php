@@ -128,12 +128,15 @@ class AssessmentList {
                 join mdl_course courses on (courses.id=items.courseid and itp.course=courses.shortname)
                 join mdl_customer customer on (customer.id=itp.customerid)
                 join mdl_grouptrainee grouptrainee on (grouptrainee.id=itp.groupid)
+                left join mdl_grade_categories cat on (cat.courseid=courses.id)
+
             WHERE
-                (items.itemtype='manual' || (items.itemtype='mod' and items.itemname REGEXP 'attendance')) 
-                                and items.itemname NOT REGEXP '[Aa]ttitude' 
-                                and items.itemname NOT REGEXP '[Pp]articipation' 
-                                and items.itemname NOT REGEXP '[Aa]chieved [Ll]evel' 
-                                and grades.finalgrade!='NULL') 
+                (items.itemtype='manual' or items.itemmodule REGEXP 'attendance') 
+                and items.itemname NOT REGEXP '[Aa]ttitude'
+                and items.itemname NOT REGEXP '[Pp]articipation'
+                and items.itemname NOT REGEXP '[Aa]chieved [Ll]evel'
+                and grades.finalgrade!='NULL'
+             and cat.fullname REGEXP '[Tt]otal [Aa]s+es+ment\s*\w*') 
         AS RESULT
             GROUP BY customerid,groupid,billid,shortname,fullname
             HAVING customerid=:customerid AND

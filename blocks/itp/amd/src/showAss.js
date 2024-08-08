@@ -95,6 +95,7 @@ function showTemplateAssessment(response){
   .then(({html,js})=>{
     const content=document.querySelector('.block_itp_content');
     content.innerHTML='';
+    window.scrollTo(0,0);
     Templates.appendNodeContents('.block_itp_content',html,js);
     
   })

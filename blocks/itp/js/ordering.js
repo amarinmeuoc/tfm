@@ -7,6 +7,7 @@ const linkDomCourse=document.querySelector('#c-link');
 const linkDomDuration=document.querySelector('#d-link');
 const orderbyField=document.createElement('input');
 
+
 function startOrdering(Y,order){
     orderbyField.setAttribute('type','hidden');
     orderbyField.setAttribute('name','orderby');
@@ -45,7 +46,6 @@ linkDomEndDate.addEventListener('click',x=>{
     }
 });
 linkDomAtt.addEventListener('click',x=>{
-    window.console.log("ar carajo");
     x.preventDefault();
     orderbyField.setAttribute('value','att');
     if (document.readyState==='complete'){

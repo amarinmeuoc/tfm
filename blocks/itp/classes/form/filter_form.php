@@ -58,6 +58,9 @@ class filter_form extends \moodleform {
         $form_is_sent=optional_param('formSent',null,PARAM_TEXT);
         $selected_customer=optional_param('selCustomer',$default_customer,PARAM_TEXT); //Selecciona el cliente por defecto
         $selected_group=optional_param('selgroup',null,PARAM_TEXT); //Selecciona el group por defecto
+        $selectedBillid=optional_param('list_trainees',null,PARAM_TEXT);
+        
+
         
         //Loading table customer
         $customers=$DB->get_records('customer');
@@ -130,6 +133,8 @@ class filter_form extends \moodleform {
                                             GROUP by username,firstname, lastname');
         $trainee_list=array_values($trainee_query);
 
+        
+
         $trainee_array=Array();
         //$pattern='/(OF-\d+)|(EN-\d+)|(^\d+\s[A-Z][A-Z]$)|(RSNFTT-\d+)/i';
         $pattern='//i';
@@ -137,13 +142,20 @@ class filter_form extends \moodleform {
             if (preg_match($pattern, $elem->billid)==1)
                 $trainee_array[$elem->billid]=$elem->groupname."_".$elem->billid." ".$elem->firstname.", ".$elem->lastname;
         }
-
+        
+                    
         $options = array(                                                                                                           
             'multiple' => false,                                                  
             'noselectionstring' => 'Use the select box below to search a trainee',
             'placeholder'=>'Write a trainee billid or a name'                                                                
-        );         
+        );       
+        
+        
+        
+
         $mform->addElement('autocomplete', 'list_trainees', 'Selected trainee', $trainee_array, $options);
+
+        
         
         $hidden=$mform->addElement('hidden', 'formSent', 'yes');
         $hidden->setType('formSent',PARAM_TEXT);

@@ -52,7 +52,7 @@ class get_trainee_list extends \core_external\external_api {
                                             HAVING groupname=:groupname
                                             AND customercode=:customercode',['groupname'=>$groupname,'customercode'=>$customercode]);
         $trainee_list=array_values($trainee_query);
-
+        
          // now security checks
          $context = \context_system::instance();
          self::validate_context($context);

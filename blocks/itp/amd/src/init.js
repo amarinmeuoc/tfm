@@ -3,35 +3,36 @@ export const init=(token)=>{
     const selCustomer=document.querySelector('#id_selCustomer');
     const groupSelect=document.querySelector('#id_selgroup');
     const selListTrainees=document.querySelector('#id_list_trainees');
+    
 
     bosubmit.classList.remove('row');
-
+    isElementLoaded('#fitem_id_list_trainees>div>div>span[role="option"]').then((selector)=>{
         updateListTrainees(selCustomer,groupSelect,selListTrainees,token);
-    
-groupSelect.addEventListener('change',(ev)=>{
-    updateListTrainees(selCustomer,groupSelect,selListTrainees,token);
-},token)
-
-selCustomer.addEventListener('change',(ev)=>{
-    let xhr = new XMLHttpRequest();
-    const url=window.location.protocol+'//'+window.location.hostname+'/webservice/rest/server.php';
-    
-    xhr.open('POST',url,true);
-    const formData= new FormData();
-    formData.append('wstoken',token);
-    formData.append('wsfunction','block_itp_get_group');
-    formData.append('moodlewsrestformat','json');
-    formData.append('params[0][customercode]',ev.target.options[ev.target.selectedIndex].value);
-    
-
-    xhr.send(formData);
-    xhr.onload = reloadGroup;
-    
-    xhr.onerror = function() {
-        window.console.log("Solicitud fallida");
-    };
-},token);
-
+        groupSelect.addEventListener('change',(ev)=>{
+            updateListTrainees(selCustomer,groupSelect,selListTrainees,token);
+        },token);
+        selCustomer.addEventListener('change',(ev)=>{
+            let xhr = new XMLHttpRequest();
+            const url=window.location.protocol+'//'+window.location.hostname+'/webservice/rest/server.php';
+            
+            xhr.open('POST',url,true);
+            const formData= new FormData();
+            formData.append('wstoken',token);
+            formData.append('wsfunction','block_itp_get_group');
+            formData.append('moodlewsrestformat','json');
+            formData.append('params[0][customercode]',ev.target.options[ev.target.selectedIndex].value);
+            
+        
+            xhr.send(formData);
+            xhr.onload = reloadGroup;
+            
+            xhr.onerror = function() {
+                window.console.log("Solicitud fallida");
+            };
+        },token);
+    });
+        
+   
 
 
 function reloadGroup(){
@@ -79,11 +80,29 @@ const updateListTrainees=(selCustomer,groupSelect,listTrainees,token)=>{
 
 
 const reloadTraineeList=(xhr,listTrainees)=>{
+    
     if (xhr.readyState=== 4 && xhr. status === 200){
         if (xhr.response){
             const list_trainees=JSON.parse(xhr.response);
+            let selectedValue=listTrainees.value;
+            let selectedTrainee=list_trainees.filter(obj=>obj.billid===listTrainees.value)[0];
+            if (selectedTrainee===undefined){
+                if (list_trainees.length>0){
+                    selectedTrainee=list_trainees[0];
+                    selectedValue=selectedTrainee.billid;
+                } else {
+                    selectedTrainee='';
+                    selectedValue='';
+                }
+                    
+            }
             
+            const option=document.createElement('option');
+            option.value=selectedValue;
+            option.textContent=selectedTrainee.groupname+"_"+selectedTrainee.billid+" "+selectedTrainee.firstname+", "+selectedTrainee.lastname;
             removeOptions(listTrainees);
+            listTrainees.appendChild(option);
+            
 
             list_trainees.map(obj=>{
                 const opt=document.createElement('option');
@@ -91,7 +110,7 @@ const reloadTraineeList=(xhr,listTrainees)=>{
                 opt.textContent=obj.groupname+"_"+obj.billid+" "+obj.firstname+", "+obj.lastname;
                 listTrainees.appendChild(opt);
             })
-
+            
             let activeSpan = document.querySelector('#fitem_id_list_trainees>div>div>span[role="option"]');
             if (activeSpan!==null){
                 activeSpan.setAttribute('data-value',(list_trainees.length===0)?'':list_trainees[0].billid);
@@ -100,7 +119,7 @@ const reloadTraineeList=(xhr,listTrainees)=>{
                 span.textContent="× "
                 activeSpan.innerHTML="";
                 activeSpan.appendChild(span);
-                activeSpan.innerHTML+= list_trainees[0].groupname+"_"+list_trainees[0].billid+" "+list_trainees[0].firstname+", "+list_trainees[0].lastname;
+                activeSpan.innerHTML+= selectedTrainee.groupname+"_"+selectedTrainee.billid+" "+selectedTrainee.firstname+", "+selectedTrainee.lastname;
             }
             
 
@@ -110,8 +129,15 @@ const reloadTraineeList=(xhr,listTrainees)=>{
 }
 
 const removeOptions=(selectElement) =>{
-    var i, L = selectElement.options.length - 1;
+    let i, L = selectElement.options.length - 1;
     for(i = L; i >= 0; i--) {
-       selectElement.remove(i);
+        selectElement.remove(i);
     }
  }
+
+ const isElementLoaded = async selector => {
+    while ( document.querySelector(selector) === null) {
+      await new Promise( resolve =>  requestAnimationFrame(resolve) )
+    }
+    return document.querySelector(selector);
+  };

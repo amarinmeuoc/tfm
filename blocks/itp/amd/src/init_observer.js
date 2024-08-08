@@ -5,14 +5,16 @@ export const init=(token,customercode)=>{
     const selListTrainees=document.querySelector('#id_list_trainees');
 
     bosubmit.classList.remove('row');
-
-    removeOptions(selListTrainees);
+    isElementLoaded('#fitem_id_list_trainees>div>div>span[role="option"]').then((selector)=>{
+        removeOptions(selListTrainees);
     
         updateListTrainees(customercode,groupSelect,selListTrainees,token);
     
-groupSelect.addEventListener('change',(ev)=>{
-    updateListTrainees(customercode,groupSelect,selListTrainees,token);
-},token,customercode)
+        groupSelect.addEventListener('change',(ev)=>{
+            updateListTrainees(customercode,groupSelect,selListTrainees,token);
+        },token,customercode)
+    });
+    
 
 
 function reloadGroup(){
@@ -67,11 +69,30 @@ const onProgressFunction=(event,listTrainees)=>{
 }
 
 const reloadTraineeList=(xhr,listTrainees)=>{
+    
     if (xhr.readyState=== 4 && xhr. status === 200){
         if (xhr.response){
             const list_trainees=JSON.parse(xhr.response);
             
+            let selectedValue=document.querySelectorAll('dd')[1].textContent.trim();
+            let selectedTrainee=list_trainees.filter(obj=>obj.billid===selectedValue)[0];
+            if (selectedTrainee===undefined){
+                if (list_trainees.length>0){
+                    selectedTrainee=list_trainees[0];
+                    selectedValue=selectedTrainee.billid;
+                } else {
+                    selectedTrainee='';
+                    selectedValue='';
+                } 
+            }
+
+            
+            
+            const option=document.createElement('option');
+            option.value=selectedValue;
+            option.textContent=selectedTrainee.groupname+"_"+selectedTrainee.billid+" "+selectedTrainee.firstname+", "+selectedTrainee.lastname;
             removeOptions(listTrainees);
+            listTrainees.appendChild(option);
 
             list_trainees.map(obj=>{
                 const opt=document.createElement('option');
@@ -81,25 +102,29 @@ const reloadTraineeList=(xhr,listTrainees)=>{
             })
 
             let activeSpan = document.querySelector('#fitem_id_list_trainees>div>div>span[role="option"]');
-            if (activeSpan!==null && list_trainees.length>0){
+            if (activeSpan!==null){
                 activeSpan.setAttribute('data-value',(list_trainees.length===0)?'':list_trainees[0].billid);
                 const span=document.createElement('span');
                 span.setAttribute('aria-hidden',true);
                 span.textContent="× "
                 activeSpan.innerHTML="";
                 activeSpan.appendChild(span);
-                activeSpan.innerHTML+= list_trainees[0].groupname+"_"+list_trainees[0].billid+" "+list_trainees[0].firstname+", "+list_trainees[0].lastname;
-            }
-            
-
-            
+                activeSpan.innerHTML+= selectedTrainee.groupname+"_"+selectedTrainee.billid+" "+selectedTrainee.firstname+", "+selectedTrainee.lastname;
+            } 
         } 
     }
 }
 
 const removeOptions=(selectElement) =>{
-    var i, L = selectElement.options.length - 1;
+    let i, L = selectElement.options.length - 1;
     for(i = L; i >= 0; i--) {
        selectElement.remove(i);
     }
  }
+
+ const isElementLoaded = async selector => {
+    while ( document.querySelector(selector) === null) {
+      await new Promise( resolve =>  requestAnimationFrame(resolve) )
+    }
+    return document.querySelector(selector);
+  };
